@@ -81,7 +81,6 @@
 !
 ! rates.*.out : writing in binary format the critical reactions rates
 !
-! info.out : writing information on the code, in particular about the code version (commit ID and branch)
 !
 ! species.out : Writing the list of species and their corresponding index
 !
