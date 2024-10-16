@@ -15,10 +15,11 @@ module gasgrain
 
 use iso_fortran_env
 use global_variables
-use structure
+use dust_temperature_module
 use input_output
 use ode_solver
-use dust_temperature_module
+use structure
+
 
 implicit none
 
@@ -290,11 +291,9 @@ call init_relevant_reactions()
 !! the jacobian
 call count_nonzeros()
 
-! Write information about the code at the very end of initialisation
-call write_general_infos()
 
 ! Do preliminary tests, before starting the integration
-! Writing information in 'info.out', appending to the file created by 'write_general_infos'
+! Writing information in 'info.out'
 call preliminary_tests()
 
 ! write banner on the user's screen
@@ -1388,7 +1387,7 @@ end subroutine init_reaction_rates
 !
 ! DESCRIPTION: 
 !> @brief To check coherence of the parameter files, reactions and so on.
-!! Writing information in 'info.out', appending to the file created by 'write_general_infos'
+!! Writing information in 'info.out'
 ! There is a switch in the parameters.in file
 ! The following tests are done :
 !   - check that all species are both produced and destroyed
@@ -1859,6 +1858,7 @@ end subroutine preliminary_tests
 subroutine write_banner()
 
   implicit none
+  integer :: i
   write(stdo,*) ' '
   write(stdo,*) '================================================================'
   write(stdo,*) '   WELCOME TO NMGC: A MULTI-GRAIN SPECIES NAUTILUS CODE USING   '

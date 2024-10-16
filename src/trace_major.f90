@@ -1,7 +1,7 @@
 program trace_major
 
-use numerical_types
 use iso_fortran_env
+use numerical_types
 use utilities
 use gasgrain
 

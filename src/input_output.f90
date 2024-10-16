@@ -22,41 +22,7 @@ implicit none
 contains
 
 
-!%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-!> @author 
-!> Christophe Cossou
-!
-!> @date 2014
-!
-! DESCRIPTION: 
-!> @brief Write information in an output file, notably the commit and branch of the compiled binary
-!! Also show if the current version had uncommitted modification that can't
-!! be traced.
-!
-!%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
-subroutine write_general_infos()
-use global_variables
-use git_infos
 
-  implicit none
-  
-  character(len=80) :: filename = 'info.out'
-  
-  open(10, file=filename)
-  write(10,'(a)') '!----------------------------'
-  write(10,'(a)') '!     Nautilus Version      |'
-  write(10,'(a)') '!----------------------------'
-  write(10,'(a,a)') 'branch = ', trim(branch)
-  write(10,'(a,a)') 'commit = ', trim(commit)
-  write(10,'(a,a)') '!', trim(modifs)
-  write(10,'(a)') ""
-  write(10,'(a)') '!----------------------------'
-  write(10,'(a)') '!      General infos        |'
-  write(10,'(a)') '!----------------------------'
-  write(10,'(a,i0)') 'Maximum number of non-zeros values in jacobian = ', nb_nonzeros_values
-  close(10)
-  
-end subroutine write_general_infos
 
 !%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 !> @author 

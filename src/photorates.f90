@@ -22,9 +22,9 @@ module photorates
     !    
     ! parameters: -mol_opacity   is \tau_m^V(\nu,r,z)
     !%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-        use utilities
         use global_variables
+        use utilities
+        
         implicit none
  
         mol_opacity(:) = 0.D0

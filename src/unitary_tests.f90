@@ -17,8 +17,8 @@
 
 program unitary_tests
 
-  use numerical_types
   use iso_fortran_env, only : error_unit
+  use numerical_types
   use global_variables
   use gasgrain
 

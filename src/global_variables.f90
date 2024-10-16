@@ -8,8 +8,8 @@
 !******************************************************************************
 
 module global_variables
-use numerical_types
 use iso_fortran_env
+use numerical_types
 use utilities
 
 implicit none
@@ -19,6 +19,7 @@ implicit none
 integer                  :: nb_grains
 integer                  :: multi_grain
 real(double_precision),allocatable, dimension(:):: grain_radii,grain_temp
+integer                  :: stdo = 6 
 ! real(double_precision), dimension(1:):: grain_radii
 ! Theses 3 parameters are only intnb_line_table_fluxended to easy the transition when one want to add a reactant or a
 !! product (product are fairly easy, reactant are not). But some things needed to be modified in the 
