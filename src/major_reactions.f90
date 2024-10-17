@@ -1,4 +1,4 @@
-program major_reactions
+module major_reactions
 
 use iso_fortran_env
 use numerical_types
@@ -553,4 +553,4 @@ if (arr(j) < arr(i)) then
 end if
 end subroutine icomp_xchg
 
-end program major_reactions
+end module major_reactions

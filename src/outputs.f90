@@ -1,4 +1,4 @@
-program outputs
+module outputs
 
 use iso_fortran_env
 use numerical_types
@@ -255,4 +255,4 @@ enddo
 ! achar(13) is carriage return '\r'. Allow to go back to the beginning of the line
 write(*,'(a,a)') achar(13), 'Writing structure output files in struct/... Done'
 
-end program outputs
+end module outputs

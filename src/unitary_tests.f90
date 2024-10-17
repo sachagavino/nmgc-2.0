@@ -1,13 +1,13 @@
 !******************************************************************************
-! PROGRAM: unitary_tests
+! module: unitary_tests
 !******************************************************************************
 !
 ! DESCRIPTION: 
-!> @brief Program that test different functions implemented in nautilus. 
+!> @brief module that test different functions implemented in nautilus. 
 !! Especially routines that were added afterwards, and are not  present in 
 !! the original version, thus can't be compared between the two versions.
 !!\n\n
-!! This program need a test simulation in the sub-folder 'tests'. Output results
+!! This module need a test simulation in the sub-folder 'tests'. Output results
 !! will be stored in the same folder.
 !!\n\n
 !! This binary is conceived so that it is run by the python script unitary_tests.py
@@ -15,7 +15,7 @@
 !******************************************************************************
 ! 
 
-program unitary_tests
+module unitary_tests
 
   use iso_fortran_env, only : error_unit
   use numerical_types
@@ -283,4 +283,4 @@ program unitary_tests
     
   
   end subroutine test_read_time_evolution
-end program unitary_tests
+end module unitary_tests

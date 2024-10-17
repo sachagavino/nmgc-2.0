@@ -1,4 +1,4 @@
-program trace_major
+module trace_major
 
 use iso_fortran_env
 use numerical_types
@@ -592,4 +592,4 @@ if (arr(j) < arr(i)) then
 end if
 end subroutine icomp_xchg
 
-end program trace_major
+end module trace_major

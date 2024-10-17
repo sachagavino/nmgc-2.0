@@ -1,4 +1,4 @@
-program select_outputs
+module select_outputs
 
 use iso_fortran_env
 use numerical_types
@@ -234,4 +234,4 @@ if(ans .ne. 0) then
 endif
 
 
-end program select_outputs
+end module select_outputs

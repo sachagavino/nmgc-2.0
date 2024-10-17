@@ -1,4 +1,4 @@
-program rates
+module rates
 
 use iso_fortran_env
 use numerical_types
@@ -199,4 +199,4 @@ end do
 ! achar(13) is carriage return '\r'. Allow to go back to the beginning of the line
 write(*,'(a,a)') achar(13), '... Done'
 
-end program rates
+end module rates
