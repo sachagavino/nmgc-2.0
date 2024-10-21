@@ -18,7 +18,8 @@ FFLAGS   = $(OPTIM) $(BCHECK)
 #-Wall
 LFLAGS   = $(OPTIM) 
 
-MISMATCH = -fallow-argument-mismatch # In order to have type mismatches errors coming from broken Fortran sources still be compiled.
+MISMATCH = -fallow-argument-mismatch # In order to have type mismatches errors coming \
+from the old ODEPACK Fortran 77 sources still be compiled.
 #-Wall
 
 
@@ -129,13 +130,13 @@ input_output.o:     		$(SRCINPUTOUTPUT) $(AMODULES) Makefile
 # 	                		$(FF) -c $(FFLAGS)  $(SRCTRACEM) -o $@
 
 opkda1.o: 					$(SRCOPKDA1)  Makefile
-	                		$(FF) -c $(FFLAGS) $(MISMATCH) $(SRCOPKDA1) -o  $@
+	                		$(FF) -c -w $(FFLAGS) $(MISMATCH) $(SRCOPKDA1) -o  $@
 
 opkda2.o: 					$(SRCOPKDA2)  Makefile
-	                		$(FF) -c $(FFLAGS) $(MISMATCH) $(SRCOPKDA2) -o $@
+	                		$(FF) -c  $(FFLAGS) $(MISMATCH) $(SRCOPKDA2) -o $@
 				
 opkdmain.o: 				$(SRCOPKDMAIN)  Makefile
-	                		$(FF) -c $(FFLAGS) $(MISMATCH) $(SRCOPKDMAIN) -o $@
+	                		$(FF) -c -w $(FFLAGS) $(MISMATCH) $(SRCOPKDMAIN) -o $@
 
 unitary_tests.o:     		$(SRCTEST) $(BMODULES) Makefile
 	                		$(FF) -c $(FFLAGS)  $(SRCTEST) -o $@
