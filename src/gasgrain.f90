@@ -296,8 +296,56 @@ call count_nonzeros()
 ! Writing information in 'info.out'
 call preliminary_tests()
 
-! write banner on the user's screen
-call write_banner()
+
+if (multi_grain.eq.1) then
+  write(stdo,*) "               ---- THIS IS MULTI-GRAIN MODE ----               "
+  call flush(stdo)
+endif
+
+if ((multi_grain.eq.1).and.(structure_type.eq.'0D')) then
+  write(stdo,*) "----------------------------------------------------------------"
+  write(stdo,*) "STRUCTURE:          0D                                          "
+  write(stdo,*) "GRAIN MODE:         multi-grain                                 "
+  write(stdo,*) "GRAIN PARAMETERS:   0D_grain_sizes.in                           "
+  WRITE(*,'(a,I3)') "NB OF GRAINS:     ", nb_grains
+elseif((multi_grain.eq.1).and.(structure_type.eq.'1D_no_diff')) then
+  WRITE(*,'(a)')'----------------------------------------------------------------------------------------------'
+  WRITE(*,'(a)')"    STRUCTURE:          1D without diffusion               "
+  WRITE(*,'(a)')"    GRAIN MODE:         multi-grain  "
+  WRITE(*,'(a)')"    GRAIN PARAMETERS:   1D_grain_sizes.in"
+  WRITE(*,'(a,I3)')"    NB OF GRAINS:  ", nb_grains
+elseif((multi_grain.eq.0).and.(structure_type.eq.'0D')) then
+  WRITE(*,'(a)')'----------------------------------------------------------------------------------------------'
+  WRITE(*,'(a)')"    STRUCTURE:          0D  "
+  WRITE(*,'(a)')"    GRAIN MODE:         single-grain  "
+  WRITE(*,'(a)')"    GRAIN PARAMETERS:   parameters.in"
+elseif((multi_grain.eq.0).and.(structure_type.eq.'1D_no_diff')) then
+  WRITE(*,'(a)')'----------------------------------------------------------------------------------------------'
+  WRITE(*,'(a)')"    STRUCTURE:          1D without diffusion               "
+  WRITE(*,'(a)')"    GRAIN MODE:         single-grain  "
+  WRITE(*,'(a)')"    GRAIN PARAMETERS:   1D_static.in"
+endif
+
+
+if (multi_grain.eq.1) then
+  WRITE(*,'(a)')'----------------------------------------------------------------------------------------------'
+  if (structure_type.eq.'1D_no_diff') then
+    WRITE(*,'(A)')'    GRAIN_INDEX     GRAIN_RADIUS         No_OF_SITES          GTODN(0)         GRAIN_ABUNDANCE(0)'
+  elseif (structure_type.eq.'0D') then
+    WRITE(*,'(A)')'    GRAIN_INDEX     GRAIN_RADIUS         No_OF_SITES          GTODN            GRAIN_ABUNDANCE'
+  endif
+  do i=1,nb_grains
+  write(*,'(I7,10x,4(es12.3,9x))')INDGRAIN(i),grain_radii(i),nb_sites_per_grain(i),GTODN(i),abundances(INDGRAIN(i),1:1) 
+  enddo
+  WRITE(*,'(a)')'----------------------------------------------------------------------------------------------'
+  call flush(stdo)
+endif
+
+WRITE(*,'(a)')""
+WRITE(*,'(a)')'----> Initialization is done. Integration starts now...'
+WRITE(*,'(a)')""
+call flush(stdo)
+
 
 
 end subroutine initialisation
@@ -447,8 +495,8 @@ implicit none
 real(double_precision) :: MSUM
 integer :: ILAB, j, k, i, isptemp
 integer :: KSUM ! sum of number of primary element composing the species. If equal to 1, the current species is elemental
-real(double_precision) :: mass_tmp !< temporary value to exchange two index in the mass array
-character(len=11) :: name_tmp !< temporary value to exchange two index in the name array
+!real(double_precision) :: mass_tmp !< temporary value to exchange two index in the mass array
+!character(len=11) :: name_tmp !< temporary value to exchange two index in the name array
 
 ! Set elements' characteristics=========================================
 ! --- Find the atomic species associated with a given element
@@ -1850,81 +1898,6 @@ endif
 end subroutine preliminary_tests
 
 
-
-
-!-------------------------------------------------------------------------
-!                  WRITE THE BANNER ON THE SCREEN
-!-------------------------------------------------------------------------
-subroutine write_banner()
-
-  implicit none
-  integer :: i
-  write(stdo,*) ' '
-  write(stdo,*) '================================================================'
-  write(stdo,*) '   WELCOME TO NMGC: A MULTI-GRAIN SPECIES NAUTILUS CODE USING   '
-  write(stdo,*) '                                                                '
-  write(stdo,*) '                         VERSION 2.0                            '
-  write(stdo,*) '                                                                '
-  write(stdo,*) '            To keep up-to-date follow NMGC on github            '
-  write(stdo,*) '                                                                '
-  write(stdo,*) '            https://github.com/sachagavino/nmgc-2.0             '
-  write(stdo,*) '                                                                '
-  write(stdo,*) '            Please, visit the NMGC documentation at             '
-  write(stdo,*) '                           http://                              '
-  write(stdo,*) '================================================================'
-  write(stdo,*) ' '
-  call flush(stdo)
-
-
-  if (multi_grain.eq.1) then
-    write(stdo,*) "               ---- THIS IS MULTI-GRAIN MODE ----               "
-    call flush(stdo)
-  endif
-
-  if ((multi_grain.eq.1).and.(structure_type.eq.'0D')) then
-    write(stdo,*) "----------------------------------------------------------------"
-    write(stdo,*) "STRUCTURE:          0D                                          "
-    write(stdo,*) "GRAIN MODE:         multi-grain                                 "
-    write(stdo,*) "GRAIN PARAMETERS:   0D_grain_sizes.in                           "
-    WRITE(*,'(a,I3)') "NB OF GRAINS:     ", nb_grains
-  elseif((multi_grain.eq.1).and.(structure_type.eq.'1D_no_diff')) then
-    WRITE(*,'(a)')'----------------------------------------------------------------------------------------------'
-    WRITE(*,'(a)')"    STRUCTURE:          1D without diffusion               "
-    WRITE(*,'(a)')"    GRAIN MODE:         multi-grain  "
-    WRITE(*,'(a)')"    GRAIN PARAMETERS:   1D_grain_sizes.in"
-    WRITE(*,'(a,I3)')"    NB OF GRAINS:  ", nb_grains
-  elseif((multi_grain.eq.0).and.(structure_type.eq.'0D')) then
-    WRITE(*,'(a)')'----------------------------------------------------------------------------------------------'
-    WRITE(*,'(a)')"    STRUCTURE:          0D  "
-    WRITE(*,'(a)')"    GRAIN MODE:         single-grain  "
-    WRITE(*,'(a)')"    GRAIN PARAMETERS:   parameters.in"
-  elseif((multi_grain.eq.0).and.(structure_type.eq.'1D_no_diff')) then
-    WRITE(*,'(a)')'----------------------------------------------------------------------------------------------'
-    WRITE(*,'(a)')"    STRUCTURE:          1D without diffusion               "
-    WRITE(*,'(a)')"    GRAIN MODE:         single-grain  "
-    WRITE(*,'(a)')"    GRAIN PARAMETERS:   1D_static.in"
-  endif
-
-
-  if (multi_grain.eq.1) then
-    WRITE(*,'(a)')'----------------------------------------------------------------------------------------------'
-    if (structure_type.eq.'1D_no_diff') then
-      WRITE(*,'(A)')'    GRAIN_INDEX     GRAIN_RADIUS         No_OF_SITES          GTODN(0)         GRAIN_ABUNDANCE(0)'
-    elseif (structure_type.eq.'0D') then
-      WRITE(*,'(A)')'    GRAIN_INDEX     GRAIN_RADIUS         No_OF_SITES          GTODN            GRAIN_ABUNDANCE'
-    endif
-    do i=1,nb_grains
-    write(*,'(I7,10x,4(es12.3,9x))')INDGRAIN(i),grain_radii(i),nb_sites_per_grain(i),GTODN(i),abundances(INDGRAIN(i),1:1) 
-    enddo
-    WRITE(*,'(a)')'----------------------------------------------------------------------------------------------'
-    call flush(stdo)
-  endif
-
-  WRITE(*,'(a)')""
-  WRITE(*,'(a)')'----> Initialization is done. Integration starts now...'
-  WRITE(*,'(a)')""
-  call flush(stdo)
-end subroutine write_banner
 
 
 

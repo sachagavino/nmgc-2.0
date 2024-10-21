@@ -3820,10 +3820,12 @@ PDLAST = 0.0D0
 RATIO = 5.0D0
 CALL DCFODE (2, ELCO, TESCO)
 DO 10 I = 1,5
-10     CM2(I) = TESCO(2,I)*ELCO(I+1,I)
+CM2(I) = TESCO(2,I)*ELCO(I+1,I)
+10 CONTINUE
 CALL DCFODE (1, ELCO, TESCO)
 DO 20 I = 1,12
-20     CM1(I) = TESCO(2,I)*ELCO(I+1,I)
+CM1(I) = TESCO(2,I)*ELCO(I+1,I)
+20 CONTINUE
 GOTO 150
 !-----------------------------------------------------------------------
 ! The following block handles preliminaries needed when JSTART = -1.
@@ -3848,7 +3850,8 @@ IRET = 1
 ! whenever the order NQ is changed, or at the start of the problem.
 !-----------------------------------------------------------------------
 150  DO 155 I = 1,L
-155    EL(I) = ELCO(I,NQ)
+    EL(I) = ELCO(I,NQ)
+155 CONTINUE
 NQNYH = NQ*NYH
 RC = RC*EL(1)/EL0
 EL0 = EL(1)
@@ -3882,9 +3885,11 @@ IRFLAG = 1
 178  CONTINUE
 R = 1.0D0
 DO 180 J = 2,L
-R = R*RH
-DO 180 I = 1,N
-180      YH(I,J) = YH(I,J)*R
+    R = R*RH
+    DO 181 I = 1,N
+        YH(I,J) = YH(I,J)*R
+    181 CONTINUE
+180 CONTINUE
 H = H*RH
 RC = RC*RH
 IALTH = L
@@ -9316,7 +9321,8 @@ KCMIN = IC(1)
 IWK(IPIAN) = 1
 DO 60 J = 1,N
 DO 35 I = 1,N
-35       IWK(LIWK+I) = 0
+    IWK(LIWK+I) = 0
+35 CONTINUE
 KAMAX = IA(J+1) - 1
 IF (KAMIN .GT. KAMAX) GOTO 45
 DO 40 K = KAMIN,KAMAX
@@ -9779,7 +9785,8 @@ IF (IRES .GT. 1) GOTO 600
 290  NLU = NLU + 1
 IERPJ = 0
 DO 295 I = 1,N
-295    RTEM(I) = 0.0D0
+    RTEM(I) = 0.0D0
+295 CONTINUE
 CALL CDRV (N,IWK(IPR),IWK(IPC),IWK(IPIC),IWK(IPIAN),IWK(IPJAN), WK(IPA),RTEM,RTEM,NSP,IWK(IPISP),WK(IPRSP),IESP,2,IYS)
 IF (IYS .EQ. 0) RETURN
 IMUL = (IYS - 1)/N

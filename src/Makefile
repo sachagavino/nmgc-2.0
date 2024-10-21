@@ -73,9 +73,9 @@ GMODULES		= gasgrain.o
 #                   RULES                       #
 #################################################
 
-all:	            		nmgc_run
+all:	            		nmgc
 
-nmgc_run:             		$(OBJ) Makefile
+nmgc:             			$(OBJ) Makefile
 	                		$(FF) $(LFLAGS) $(OBJ) -o $@ 
 
 main.o:        				$(SRCMAIN)  $(CMODULES) $(GMODULES) Makefile
@@ -130,10 +130,10 @@ input_output.o:     		$(SRCINPUTOUTPUT) $(AMODULES) Makefile
 # 	                		$(FF) -c $(FFLAGS)  $(SRCTRACEM) -o $@
 
 opkda1.o: 					$(SRCOPKDA1)  Makefile
-	                		$(FF) -c $(FFLAGS) $(MISMATCH) $(SRCOPKDA1) -o  $@
+	                		$(FF) -c -w $(FFLAGS) $(MISMATCH) $(SRCOPKDA1) -o  $@
 
 opkda2.o: 					$(SRCOPKDA2)  Makefile
-	                		$(FF) -c  $(FFLAGS) $(MISMATCH) $(SRCOPKDA2) -o $@
+	                		$(FF) -c -w $(FFLAGS) $(MISMATCH) $(SRCOPKDA2) -o $@
 				
 opkdmain.o: 				$(SRCOPKDMAIN)  Makefile
 	                		$(FF) -c -w $(FFLAGS) $(MISMATCH) $(SRCOPKDMAIN) -o $@
@@ -141,7 +141,7 @@ opkdmain.o: 				$(SRCOPKDMAIN)  Makefile
 unitary_tests.o:     		$(SRCTEST) $(BMODULES) Makefile
 	                		$(FF) -c $(FFLAGS)  $(SRCTEST) -o $@
 
-install:	    nmgc_run
+install:	    nmgc
 				./install.pl
 
 clean:

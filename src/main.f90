@@ -137,6 +137,9 @@ real(double_precision) :: remaining_time !< estimated remaining time [s]
 integer :: i,j,k, ic_i !< For loops
 character(2) :: c_i !character variable to convert integer value of j to character j
 
+! write banner on the user's screen
+call write_banner()
+
 
 call initialisation()
 
@@ -165,7 +168,7 @@ select case(OUTPUT_TYPE)
   case default
     write(error_unit,*) 'The OUTPUT_TYPE="', OUTPUT_TYPE,'" cannot be found.'
     write(error_unit,*) 'Values possible : linear, log, table'
-    write(error_unit, '(a)') 'Error in nautilus: main program gasgrain' 
+    write(error_unit, '(a)') 'Error in nautilus: main module gasgrain' 
     call exit(12)
 end select
 endif
@@ -575,6 +578,32 @@ subroutine integrate_chemical_scheme(delta_t,temp_abundances,itol,atol,itask,iop
 
   return 
   end subroutine integrate_chemical_scheme
+
+
+
+!-------------------------------------------------------------------------
+!                  WRITE THE BANNER ON THE SCREEN
+!-------------------------------------------------------------------------
+  subroutine write_banner()
+
+    implicit none
+    write(stdo,*) ' '
+    write(stdo,*) '================================================================'
+    write(stdo,*) '      WELCOME TO NMGC: THE MULTI-GRAIN VERSION OF NAUTILUS      '
+    write(stdo,*) '                                                                '
+    write(stdo,*) '                         VERSION 2.0                            '
+    write(stdo,*) '                                                                '
+    write(stdo,*) '            To keep up-to-date follow NMGC on github            '
+    write(stdo,*) '                                                                '
+    write(stdo,*) '            https://github.com/sachagavino/nmgc-2.0             '
+    write(stdo,*) '                                                                '
+    write(stdo,*) '            Please, visit the NMGC documentation at             '
+    write(stdo,*) '                           http://                              '
+    write(stdo,*) '================================================================'
+    write(stdo,*) ' '
+    call flush(stdo)
+  end subroutine write_banner
+
 
 ! ======================================================================
 ! ======================================================================
