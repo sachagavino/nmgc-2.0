@@ -1083,27 +1083,31 @@ if (isDefined) then
   close(10)
   
 else
-  write (*,*) 'Warning: The file "parameters.in" does not exist. Default values have been used'
+  write (*,*) 'ERROR: There is no file "parameters.in" in the working folder. Please, add one.'
+  write (*,*) ''
+  call exit(21)
 end if
 
 START_TIME = START_TIME * YEAR
 STOP_TIME = STOP_TIME * YEAR
 
 if ((STRUCTURE_TYPE.eq.'0D').and.(spatial_resolution.ne.1)) then
-  write(Error_unit,'(a,i0,a)') 'Error: In 0D, we must have one point (spatial_resolution=',spatial_resolution,')'
+  write(Error_unit,'(a,i0,a)') 'ERROR: In 0D, we must have one point (spatial_resolution=',spatial_resolution,')'
+  write (*,*) ''
   call exit(22)
 endif
 
 if ((STRUCTURE_TYPE.ne.'0D').and.(spatial_resolution.eq.1)) then
-  write(Error_unit,'(a,i0,a)') 'Error: In 1D, we must have more than one point (spatial_resolution=',spatial_resolution, ')'
-  call exit(22)
+  write(Error_unit,'(a,i0,a)') 'ERROR: In 1D, we must have more than one point (spatial_resolution=',spatial_resolution, ')'
+  write (*,*) ''
+  call exit(23)
 endif
 
 if ((STRUCTURE_TYPE.ne.'0D').and.(IS_STRUCTURE_EVOLUTION.ne.0)) then
-  write(Error_unit,*) 'Error: In 1D, structure evolution is currently not supported. If is_structure_evolution=1, you must have'
+  write(Error_unit,*) 'ERROR: In 1D, structure evolution is currently not supported. If is_structure_evolution=1, you must have'
   write(Error_unit,*) '       structure_type="0D"'
-  
-  call exit(23)
+  write (*,*) ''
+  call exit(24)
 endif
 
 return

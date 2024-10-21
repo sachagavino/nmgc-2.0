@@ -19,7 +19,7 @@ implicit none
 integer                  :: nb_grains
 integer                  :: multi_grain
 real(double_precision),allocatable, dimension(:):: grain_radii,grain_temp
-integer                  :: stdo = 6 
+integer                  :: stdo, ffli
 ! real(double_precision), dimension(1:):: grain_radii
 ! Theses 3 parameters are only intnb_line_table_fluxended to easy the transition when one want to add a reactant or a
 !! product (product are fairly easy, reactant are not). But some things needed to be modified in the 
@@ -523,6 +523,12 @@ real(double_precision) :: NNH2 ! column density [cm-2] (for the self shielding)
 real(double_precision) :: NNH3 ! column density [cm-2] (for the self shielding)
 
 logical :: first_step_done = .false. !< do we have currently done the first step of the integrator ?
+ ! COMMANDS TO RUN
+logical :: do_chemical_scheme 
+logical :: do_outputs 
+logical :: do_rates 
+logical :: do_major_reactions  
+
 integer :: NB_OUTPUTS !< Total number of outputs in the simulation
 character(len=80) :: OUTPUT_TYPE !< Type of output times sampling. linear, log
 !! linear: Output times are linearly spaced\n 
