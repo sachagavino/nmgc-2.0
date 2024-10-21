@@ -628,10 +628,15 @@ integer n, incx, incy, i, ix, iy, m, mp1, ns
 DOUBLE PRECISION DX(*), DY(*), DA
 !***FIRST EXECUTABLE STATEMENT  DAXPY
 IF (N.LE.0 .OR. DA.EQ.0.0D0) RETURN
-IF (INCX .EQ. INCY) IF (INCX-1) 5,20,60
+IF (INCX .EQ. INCY) THEN
+!  IF (INCX-1) 5,20,60
+    IF (INCX-1 .lt. 0) goto 5
+    If (INCX-1 .eq. 0) goto 20
+    If (INCX-1 .gt. 0) goto 60  ! if statement not strictly necessary
 !
 !     Code for unequal or nonpositive increments.
 !
+END IF
 5 IX = 1
 IY = 1
 IF (INCX .LT. 0) IX = (-N+1)*INCX + 1
@@ -718,10 +723,15 @@ integer n, incx, incy, i, ix, iy, m, mp1, ns
 DOUBLE PRECISION DX(*), DY(*)
 !***FIRST EXECUTABLE STATEMENT  DCOPY
 IF (N .LE. 0) RETURN
-IF (INCX .EQ. INCY) IF (INCX-1) 5,20,60
-!
-!     Code for unequal or nonpositive increments.
-!
+IF (INCX .EQ. INCY) THEN
+    !  IF (INCX-1) 5,20,60
+        IF (INCX-1 .lt. 0) goto 5
+        If (INCX-1 .eq. 0) goto 20
+        If (INCX-1 .gt. 0) goto 60  ! if statement not strictly necessary
+    !
+    !     Code for unequal or nonpositive increments.
+    !
+    END IF
 5 IX = 1
 IY = 1
 IF (INCX .LT. 0) IX = (-N+1)*INCX + 1
@@ -812,10 +822,15 @@ DOUBLE PRECISION DX(*), DY(*)
 !***FIRST EXECUTABLE STATEMENT  DDOT
 DDOT = 0.0D0
 IF (N .LE. 0) RETURN
-IF (INCX .EQ. INCY) IF (INCX-1) 5,20,60
-!
-!     Code for unequal or nonpositive increments.
-!
+IF (INCX .EQ. INCY) THEN
+    !  IF (INCX-1) 5,20,60
+        IF (INCX-1 .lt. 0) goto 5
+        If (INCX-1 .eq. 0) goto 20
+        If (INCX-1 .gt. 0) goto 60  ! if statement not strictly necessary
+    !
+    !     Code for unequal or nonpositive increments.
+    !
+    END IF
 5 IX = 1
 IY = 1
 IF (INCX .LT. 0) IX = (-N+1)*INCX + 1

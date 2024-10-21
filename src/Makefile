@@ -130,7 +130,7 @@ input_output.o:     		$(SRCINPUTOUTPUT) $(AMODULES) Makefile
 # 	                		$(FF) -c $(FFLAGS)  $(SRCTRACEM) -o $@
 
 opkda1.o: 					$(SRCOPKDA1)  Makefile
-	                		$(FF) -c -w $(FFLAGS) $(MISMATCH) $(SRCOPKDA1) -o  $@
+	                		$(FF) -c $(FFLAGS) $(MISMATCH) $(SRCOPKDA1) -o  $@
 
 opkda2.o: 					$(SRCOPKDA2)  Makefile
 	                		$(FF) -c  $(FFLAGS) $(MISMATCH) $(SRCOPKDA2) -o $@
