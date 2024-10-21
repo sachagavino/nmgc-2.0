@@ -6,6 +6,9 @@ use utilities
 use gasgrain
 
 implicit none
+contains 
+
+subroutine get_rates()
 
 ! Locals
 character(len=80) :: filename_output
@@ -198,5 +201,7 @@ end do
 
 ! achar(13) is carriage return '\r'. Allow to go back to the beginning of the line
 write(*,'(a,a)') achar(13), '... Done'
+
+end subroutine get_rates
 
 end module rates

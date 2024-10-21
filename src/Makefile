@@ -51,7 +51,7 @@ SRCUTIL        = $(SRC)/utilities.f90
 
 OBJ            	= main.o gasgrain.o dust_temperature_module.o \
                 global_variables.o input_output.o iso_fortran_env.o \
-				numerical_types.o \
+				numerical_types.o outputs.o \
 				ode_solver.o opkda1.o opkda2.o opkdmain.o photorates.o \
 				shielding.o structure.o utilities.o
 
@@ -117,8 +117,8 @@ input_output.o:     		$(SRCINPUTOUTPUT) $(AMODULES) Makefile
 # major_reactions.o:     		$(SRCMAJOR) $(BMODULES) Makefile
 # 	                		$(FF) -c $(FFLAGS)  $(SRCMAJOR) -o $@
 
-# outputs.o:     				$(SRCOUTPUT) $(BMODULES) Makefile
-# 	                		$(FF) -c $(FFLAGS)  $(SRCOUTPUT) -o $@
+outputs.o:     				$(SRCOUTPUT) $(BMODULES) $(GMODULES) Makefile
+	                		$(FF) -c $(FFLAGS)  $(SRCOUTPUT) -o $@
 
 # rates.o:     				$(SRCRATES) $(BMODULES) Makefile
 # 	                		$(FF) -c $(FFLAGS) $(SRCRATES) -o $@

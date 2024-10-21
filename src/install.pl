@@ -36,14 +36,13 @@ print "You might want to type rehash.\n";
 
 
 
-$profile  = $home . "/.zshrc" ;
 $PATH = $ENV{"PATH"};
 if(!($PATH =~ /$bin/)) {
     print "The $bin directory exists, but it not in the PATH environment variable\n" ;
     print "You must put the $bin directory in the path yourself after this installation is done.\n" ;
-    print "Add the following line in $profile: \n" ;
+    print "Add the following line in your bash profile: \n" ;
     print "export PATH=$bin:$PATH" ;
-    print "Don't forget to type source $profile and rehash in a terminal.\n";
+    print "Don't forget to type source <your bash profile> and rehash in a terminal.\n";
 
 }
 

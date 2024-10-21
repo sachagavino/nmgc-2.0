@@ -100,6 +100,7 @@ PROGRAM nmgc
   use dust_temperature_module
   use gasgrain
   use photorates
+  use outputs
 
   implicit none
 
@@ -508,6 +509,10 @@ PROGRAM nmgc
 
 
     elseif(do_outputs) then
+      call init_outputs()
+      call write_outputs_ab()
+      call write_outputs_ml()
+      call write_outputs_struct
 
     end if
 

@@ -346,8 +346,6 @@ WRITE(*,'(a)')'----> Initialization is done. Integration starts now...'
 WRITE(*,'(a)')""
 call flush(stdo)
 
-
-
 end subroutine initialisation
 
 
