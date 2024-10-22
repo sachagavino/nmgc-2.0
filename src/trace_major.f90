@@ -6,7 +6,9 @@ use utilities
 use gasgrain
 
 implicit none
+contains 
 
+subroutine get_trace_major()
 ! Parameters
 real(double_precision), parameter :: PERCENTAGE_THRESHOLD = 1.d0 !< Percentage below which the reaction will not be displayed
 
@@ -67,7 +69,7 @@ character(len=35) :: reaction_line ! the longest reaction so far is the line 239
 !! This short value is to align reactions correctly, but limiting the number of extra spaces
 
 ! Initialise all variables from the global_variables module. Only some of them are used here.
-call initialisation()
+call init_gasgrain()
 
 ! We calculate the total number of outputs by checking for each file if it exist or not.
 nb_outputs = 0
@@ -591,5 +593,7 @@ if (arr(j) < arr(i)) then
   j=swp
 end if
 end subroutine icomp_xchg
+
+end subroutine get_trace_major
 
 end module trace_major

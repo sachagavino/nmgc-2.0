@@ -6,6 +6,9 @@ use utilities
 use gasgrain
 
 implicit none
+contains 
+
+subroutine get_major_reactions()
 
 ! Parameters
 real(double_precision) :: PERCENTAGE_THRESHOLD !< Percentage below which the reaction will not be displayed
@@ -13,7 +16,6 @@ real(double_precision) :: PERCENTAGE_THRESHOLD !< Percentage below which the rea
 ! Locals
 character(len=80) :: filename_output
 integer :: output, reaction, i ! index for loops
-logical :: isDefined
 real(double_precision) :: tmp !< temporary variable
 character(len=80) :: output_format
 
@@ -56,23 +58,9 @@ character(len=35) :: reaction_line ! the longest reaction so far is the line 239
 !! This short value is to align reactions correctly, but limiting the number of extra spaces
 
 ! Initialise all variables from the global_variables module. Only some of them are used here.
-call initialisation()
+! call init_gasgrain()
 
-! We calculate the total number of outputs by checking for each file if it exist or not.
-nb_outputs = 0
-isDefined = .true.
-do while(isDefined)
-  nb_outputs = nb_outputs + 1
-  write(filename_output, '(a,i0.6,a)') 'abundances.',nb_outputs,'.out'
-  inquire(file=filename_output, exist=isDefined)
 
-enddo
-nb_outputs = nb_outputs - 1
-
-write(*,'(a, i0)') 'Spatial resolution: ', spatial_resolution
-write(*,'(a, i0)') 'Number of time outputs: ', nb_outputs
-write(*,'(a, i0)') 'Number of species: ', nb_species
-write(*,'(a, i0)') 'Number of reactions: ', nb_reactions
 
 ! We allocate the output arrays
 
@@ -393,33 +381,33 @@ contains
 !> @brief Return a string to display a reaction
 !
 !%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
-subroutine display_reaction(names,reaction_line)
+subroutine display_reaction(names,reactionline)
 implicit none
 
 ! Input
 character(len=11), dimension(MAX_COMPOUNDS), intent(in) :: names !<[in] REACTION_COMPOUNDS_NAMES for a given reaction
 
 ! Output
-character(len=*), intent(out) :: reaction_line !<[out] String that represent the reaction
+character(len=*), intent(out) :: reactionline !<[out] String that represent the reaction
 
 ! Locals
 character(len=11) :: tmp_name
 integer :: compound
 
-reaction_line = trim(names(1))
+reactionline = trim(names(1))
 do compound=2,MAX_REACTANTS
 tmp_name = names(compound)
   if (tmp_name.ne.'') then
-    reaction_line = trim(reaction_line)//" + "//trim(tmp_name)
+    reactionline = trim(reactionline)//" + "//trim(tmp_name)
   endif
 enddo
 
-reaction_line = trim(reaction_line)//" -> "//trim(names(MAX_REACTANTS+1))
+reactionline = trim(reactionline)//" -> "//trim(names(MAX_REACTANTS+1))
 
 do compound=MAX_REACTANTS+2,MAX_COMPOUNDS
 tmp_name = names(compound)
   if (tmp_name.ne.'') then
-  reaction_line = trim(reaction_line)//" + "//trim(tmp_name)
+  reactionline = trim(reactionline)//" + "//trim(tmp_name)
   endif
 enddo
 
@@ -446,7 +434,7 @@ real(double_precision), dimension(:), intent(in) :: arr !<[in] the input array f
 integer, dimension(:), intent(out) :: index !<[out] the index of the elements, from lowest to highest corresponding values
 integer, parameter :: nn=15, nstack=50
 real(double_precision) :: a
-integer :: n,k,i,j,indext,jstack,l,r
+integer :: n,k,j,indext,jstack,l,r
 integer, dimension(nstack) :: istack
 integer :: tmp_index
 
@@ -542,15 +530,17 @@ end subroutine get_sorted_index
 !! the value of the second (j).
 !
 !%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
-subroutine icomp_xchg(arr,i,j)
+subroutine icomp_xchg(arr,k,j)
 real(double_precision), dimension(:), intent(in) :: arr !<[in] the reference array
-integer, intent(inout) :: i,j !<[in,out] index we will swap if necessary
+integer, intent(inout) :: k,j !<[in,out] index we will swap if necessary
 integer :: swp
 if (arr(j) < arr(i)) then
-  swp=i
-  i=j
+  swp=k
+  k=j
   j=swp
 end if
 end subroutine icomp_xchg
+
+end subroutine get_major_reactions
 
 end module major_reactions

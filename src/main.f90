@@ -98,19 +98,21 @@ PROGRAM nmgc
   use shielding
   use utilities
   use dust_temperature_module
-  use gasgrain
   use photorates
+  use gasgrain
   use outputs
+  use rates
+  use major_reactions
 
   implicit none
-
+  
   ! Parameters for DLSODES. RTOL is the RELATIVE_ABUNDANCE parameter in global_variables.f90
   integer :: itol = 2 !< ITOL = 1 or 2 according as ATOL (below) is a scalar or array.
   integer :: itask = 1 !< ITASK = 1 for normal computation of output values of Y at t = TOUT.
   integer :: istate = 1 !< ISTATE = integer flag (input and output).  Set ISTATE = 1.
   integer :: iopt = 1 !< IOPT = 0 to indicate no optional inputs used.
   integer :: mf = 121 !< method flag.  Standard values are:
-  integer :: maxtasks = 2       
+  integer :: maxtasks = 1       
   !!\n          10  for nonstiff (Adams) method, no Jacobian used
   !!\n          121 for stiff (BDF) method, user-supplied sparse Jacobian
   !!\n          222 for stiff method, internally generated sparse Jacobian
@@ -137,11 +139,35 @@ PROGRAM nmgc
   real(double_precision) :: code_start_time, code_current_time, code_elapsed_time !< cpu time in seconds, allowing to predict the expected ending time of the simulation
   real(double_precision) :: remaining_time !< estimated remaining time [s]
 
-  integer :: i,j,k, ic_i !< For loops
+  integer :: i, ic_i !< For loops
   character(2) :: c_i !character variable to convert integer value of j to character j
-  logical :: gotit,quit,fromstdi
+  logical :: gotit,quit !,fromstdi
+
+  ! ! FOR OUTPUTS 
+  ! ! Locals
+  character(len=80) :: filename_output
+  ! integer :: species, output, idx_1D ! index for loops
+  logical :: isDefined
+
   stdo = 6
   ffli = 5
+
+
+
+  
+  ! character(len=80) :: output_format,output_format1,output_format2 !< format used to output data
+  ! character(len=180) :: sys_cmd !< character to call sys command
+  
+  ! real(double_precision), dimension(:,:,:), allocatable :: abundances_out !< abundances over time for each species. (nb_outputs, nb_species)
+  
+  ! real(double_precision), dimension(:), allocatable :: time !< Simulation time [s]
+  ! real(double_precision), dimension(:,:), allocatable :: gas_temperature_out !< [K]
+  ! real(double_precision), dimension(:,:), allocatable :: dust_temperature_out !< [K]
+  ! real(double_precision), dimension(:,:), allocatable :: density !< [part/cm^3] 
+  ! real(double_precision), dimension(:,:), allocatable :: visual_extinction_out !< visual extinction [mag]
+  ! real(double_precision), dimension(:), allocatable :: x_rate !< X ionisation rate [s-1]
+  ! ! character(2) :: c_i !character variable to convert integer value of j to character j
+  ! ! integer      :: i,j,ic_i !convert character c_i to integer ic_i
 
 
   ! Defaults for the actions
@@ -152,25 +178,28 @@ PROGRAM nmgc
   do_major_reactions  = .false.
 
 
+
+
+  !================================================================
+  !                          START ACTION
+  !================================================================
+
   ! interpret command
   call interpet_command_line(gotit,.false.,quit)
     if(.not.gotit) goto 650
 
   ! write banner on the user's screen
-  call write_banner()
 
-  !================================================================
-  !                          START ACTION
-  !================================================================
+
 
   itask = 1
   quit = .false.
   do while(.not.quit) 
 
     if(do_chemical_scheme) then 
+      call write_banner()
 
-
-      call initialisation()
+      call init_gasgrain()
 
       call initialize_work_arrays()
 
@@ -287,7 +316,7 @@ PROGRAM nmgc
       !            AV_NH_ratio=AV_NH_1D(x_i)
                   endif
 
-                call get_grain_temperature(space=x_i,time=current_time, gas_temperature=gas_temperature(x_i), &
+                call get_grain_temperature(space=x_i,time=current_time, gastemperature=gas_temperature(x_i), &
                       av=visual_extinction(x_i), & ! inputs
                       grain_temperature=dust_temperature(:,x_i)) ! Outputs
                 
@@ -387,10 +416,10 @@ PROGRAM nmgc
             NNH2 = NNH2_z(x_i)
             NNH3 = NNH3_z(x_i)
 
-
+            
             call integrate_chemical_scheme(delta_t=output_timestep, temp_abundances=abundances(1:nb_species, x_i),& ! Inputs
-            itol=itol, atol=atol, itask=itask, iopt=iopt, mf=mf, & ! Inputs
-            istate=istate) ! Output
+            i_tol=itol, a_tol=atol, i_task=itask, i_opt=iopt, m_f=mf, & ! Inputs
+            i_state=istate) ! Output
 
             reaction_rates_1D(x_i,1:nb_reactions)=reaction_rates(1:nb_reactions)
 
@@ -509,10 +538,78 @@ PROGRAM nmgc
 
 
     elseif(do_outputs) then
-      call init_outputs()
-      call write_outputs_ab()
-      call write_outputs_ml()
-      call write_outputs_struct
+        ! We calculate the total number of outputs by checking for each file if it exist or not.
+      nb_outputs = 0
+      isDefined = .true.
+      do while(isDefined)
+        nb_outputs = nb_outputs + 1
+        write(filename_output, '(a,i0.6,a)') 'abundances.',nb_outputs,'.out'
+        inquire(file=filename_output, exist=isDefined)
+      enddo
+      nb_outputs = nb_outputs - 1
+
+      if (nb_outputs.eq.0) then
+        write(Error_unit,'(a)') 'ERROR: there is no output files in the model. Please, compute the chemistry first.'
+        stop
+      endif
+      
+      call write_banner()
+
+      write(*,'(a,i0)') 'Spatial resolution: ', spatial_resolution
+      write(*,'(a,i0)') 'Number of time outputs: ', nb_outputs
+      write(*,'(a,i0)') 'Number of species: ', nb_species
+      write(*,'(a,i0)') 'Start generatint output ASCII files... '
+      call get_outputs()
+
+    elseif(do_rates) then 
+      ! We calculate the total number of outputs by checking for each file if it exist or not.
+      nb_outputs = 0
+      isDefined = .true.
+      do while(isDefined)
+        nb_outputs = nb_outputs + 1
+        write(filename_output, '(a,i0.6,a)') 'abundances.',nb_outputs,'.out'
+        inquire(file=filename_output, exist=isDefined)
+      enddo
+      nb_outputs = nb_outputs - 1
+
+      if (nb_outputs.eq.0) then
+        write(Error_unit,'(a)') 'ERROR: there is no output files in the model. Please, compute the chemistry first.'
+        stop
+      endif
+
+      call write_banner()
+
+      write(*,'(a, i0)') 'Spatial resolution: ', spatial_resolution
+      write(*,'(a, i0)') 'Number of time outputs: ', nb_outputs
+      write(*,'(a, i0)') 'Number of species: ', nb_species
+      write(*,'(a, i0)') 'Number of reactions: ', nb_reactions
+      write(*,'(a,i0)') 'Start generating fluxes and rate coefficients files... '
+      call get_rates()
+
+      elseif(do_major_reactions) then 
+        ! We calculate the total number of outputs by checking for each file if it exist or not.
+        nb_outputs = 0
+        isDefined = .true.
+        do while(isDefined)
+          nb_outputs = nb_outputs + 1
+          write(filename_output, '(a,i0.6,a)') 'abundances.',nb_outputs,'.out'
+          inquire(file=filename_output, exist=isDefined)
+        enddo
+        nb_outputs = nb_outputs - 1
+
+        if (nb_outputs.eq.0) then
+          write(Error_unit,'(a)') 'ERROR: there is no output files in the model. Please, compute the chemistry first.'
+          stop
+        endif
+
+        call write_banner()
+
+        write(*,'(a, i0)') 'Spatial resolution: ', spatial_resolution
+        write(*,'(a, i0)') 'Number of time outputs: ', nb_outputs
+        write(*,'(a, i0)') 'Number of species: ', nb_species
+        write(*,'(a, i0)') 'Number of reactions: ', nb_reactions
+        call get_major_reactions()
+
 
     end if
 
@@ -529,7 +626,8 @@ PROGRAM nmgc
   650 continue
 
   contains
-
+! ======================================================================
+! ======================================================================
 
   !%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   !> @author 
@@ -541,24 +639,24 @@ PROGRAM nmgc
   !> @brief Chemically evolve for a given time delta_t
   !
   !%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
-  subroutine integrate_chemical_scheme(delta_t,temp_abundances,itol,atol,itask,iopt,mf,istate)
-
+  subroutine integrate_chemical_scheme(delta_t,temp_abundances,i_tol,a_tol,i_task,i_opt,m_f,i_state)
+    use global_variables
     
+    !implicit none
     implicit none
-
     ! Inputs
     real(double_precision), intent(in) :: delta_t !<[in] time during which we must integrate
-    integer, intent(in) :: itol !<[in] ITOL   = 1 or 2 according as ATOL (below) is a scalar or array.
-    integer, intent(in) :: itask !<[in] ITASK  = 1 for normal computation of output values of Y at t = TOUT.
-    integer, intent(in) :: iopt !<[in] IOPT   = 0 to indicate no optional inputs used.
-    integer, intent(in) :: mf !<[in] method flag.  Standard values are:
+    integer, intent(in) :: i_tol !<[in] ITOL   = 1 or 2 according as ATOL (below) is a scalar or array.
+    integer, intent(in) :: i_task !<[in] ITASK  = 1 for normal computation of output values of Y at t = TOUT.
+    integer, intent(in) :: i_opt !<[in] IOPT   = 0 to indicate no optional inputs used.
+    integer, intent(in) :: m_f !<[in] method flag.  Standard values are:
   !!\n          10  for nonstiff (Adams) method, no Jacobian used
   !!\n          121 for stiff (BDF) method, user-supplied sparse Jacobian
   !!\n          222 for stiff method, internally generated sparse Jacobian
-    real(double_precision), intent(in) :: atol !<[in] integrator tolerance
-
+    real(double_precision), intent(in) :: a_tol !<[in] integrator tolerance
+  
     ! Outputs
-    integer, intent(out) :: istate !<[out] ISTATE = 2  if DLSODES was successful, negative otherwise.
+    integer, intent(out) :: i_state !<[out] ISTATE = 2  if DLSODES was successful, negative otherwise.
   !!\n          -1 means excess work done on this call (perhaps wrong MF).
   !!\n          -2 means excess accuracy requested (tolerances too small).
   !!\n          -3 means illegal input detected (see printed message).
@@ -578,60 +676,58 @@ PROGRAM nmgc
     ! Input/Output
     real(double_precision), dimension(nb_species), intent(inout) :: temp_abundances !<[in,out] Temporary array that contain the 
     !! abundances for the duration of the timestep, a sort of buffer.
-
+  
     ! Locals
-    integer :: i
+    ! integer :: i
     real(double_precision) :: t !< The local time, starting from 0 to delta_t
     real(double_precision), dimension(nb_species) :: satol !< Array that contain the absolute tolerance, 
     !! one value per species, either a minimum value or a value related to its abundance.
-
-
+  
+  
     real(double_precision) :: t_stop_step
-
+  
     t_stop_step = delta_t
     t = 0.d0
-
+  
     do while (t.lt.t_stop_step)
-
-      istate = 1
-
+  
+      i_state = 1
+  
       ! Adaptive absolute tolerance to avoid too high precision on very abundant species,
       ! H2 for instance. Helps running a bit faster
-
+  
       do i=1,nb_species
-        satol(i) = max(atol, 1.d-16 * temp_abundances(i))
+        satol(i) = max(a_tol, 1.d-16 * temp_abundances(i))
       enddo
-
+  
       ! Added on Dec 2019 to prevent from NaN issues.
       if (temp_abundances(i).le.1.d-60) then
           temp_abundances(i) = 1.d-60
       end if
-
+  
       ! Feed IWORK with IA and JA
-
+  
       call set_work_arrays(Y=temp_abundances)
       
-
-      call dlsodes(get_temporal_derivatives,nb_species,temp_abundances,t,t_stop_step,itol,RELATIVE_TOLERANCE,&
-      satol,itask,istate,iopt,rwork,lrw,iwork,liw,get_jacobian,mf)       
-
-
-
+  
+      call dlsodes(get_temporal_derivatives,nb_species,temp_abundances,t,t_stop_step,i_tol,RELATIVE_TOLERANCE,&
+      satol,i_task,i_state,i_opt,rwork,lrw,iwork,liw,get_jacobian,m_f)       
+  
+  
+  
       ! Whenever the solver fails converging, print the reason.
       ! cf odpkdmain.f for translation
-      if (istate.ne.2) then
-        write(*,*)  'ISTATE = ', ISTATE
+      if (i_state.ne.2) then
+        write(*,*)  'ISTATE = ', I_STATE
       endif
-
+  
     enddo
-
+  
     return 
   end subroutine integrate_chemical_scheme
 
-
 END program nmgc
-! ======================================================================
-! ======================================================================
+
 
 
 !-------------------------------------------------------------------------
@@ -712,6 +808,11 @@ subroutine interpet_command_line(gotit,fromstdi,quit)
           !
           do_major_reactions = .true.
           gotit = .true.
+
+        else
+          write(stdo,*) 'ERROR: Could not recognize command line option ',trim(buffer)
+          stop
+
     end if
   end do
 

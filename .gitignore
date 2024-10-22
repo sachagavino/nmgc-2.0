@@ -32,3 +32,6 @@ __pycache__/
 *.pptx
 *.key
 *.dSYM
+ab/
+ml/
+struct/

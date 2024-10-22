@@ -73,10 +73,10 @@ real(double_precision) :: ED_H2 !< Binding energy of H2 over itself
 ! Name of key species
 character(len=11) :: YH     = 'H          ' !< Gas phase Hydrogen
 character(len=11) :: YN2    = 'N2         ' !< Gas phase N2
-character(len=11) :: YJH    = 'J01H         ' !< Hydrogen on grains
+character(len=11) :: YJH    = 'J01H       ' !< Hydrogen on grains
 character(len=11) :: YH2    = 'H2         ' !< Gas phase Dihydrogen
-character(len=11) :: YJH2   = 'J01H2        ' !< Dihydrogen on grains
-character(len=11) :: YJO    = 'J01O         ' !< Oxygen on grains
+character(len=11) :: YJH2   = 'J01H2      ' !< Dihydrogen on grains
+character(len=11) :: YJO    = 'J01O       ' !< Oxygen on grains
 character(len=11) :: YHE    = 'He         ' !< Gas phase Helium
 character(len=11) :: YHEP   = 'He+        ' !< Gas phase Helium+
 character(len=11) :: YE     = 'e-         ' !< Gas phase electrons
@@ -94,20 +94,20 @@ character(len=11) :: YKH2O  = 'K01H2O     ' !< H2O in the mantle of the first gr
 character(len=11) :: YJH2O  = 'J01H2O     ' !< H2O on the surface of the first grain
 character(len=11) :: YKH    = 'K01H       ' !< Hydrogen on first grain
 character(len=11) :: YKH2   = 'K01H2      ' !< Dihydrogen on first grain
-character(len=11) :: YCH   = 'CH         ' !< Gas phase CH
+character(len=11) :: YCH    = 'CH         ' !< Gas phase CH
 character(len=11) :: YCH3   = 'CH3        ' !< Gas phase CH3
 character(len=11) :: YCO2   = 'CO2        ' !< Gas phase CO2
-character(len=11) :: YH2CO   = 'H2CO       ' !< Gas phase H2CO
-character(len=11) :: YN2O   = 'N2O       ' !< Gas phase N2O
-character(len=11) :: YCH4   = 'CH4       ' !< Gas phase CH4
-character(len=11) :: YOH   = 'OH       ' !< Gas phase OH
-character(len=11) :: YHCO   = 'HCO       ' !< Gas phase HCO
-character(len=11) :: YCN   = 'CN       ' !< Gas phase CN
-character(len=11) :: YHCN   = 'HCN       ' !< Gas phase HCN
-character(len=11) :: YHNC   = 'HNC       ' !< Gas phase HNC
-character(len=11) :: YNH   = 'NH       ' !< Gas phase NH
-character(len=11) :: YNH2   = 'NH2       ' !< Gas phase NH2
-character(len=11) :: YNH3   = 'NH3       ' !< Gas phase NH3
+character(len=11) :: YH2CO  = 'H2CO       ' !< Gas phase H2CO
+character(len=11) :: YN2O   = 'N2O        ' !< Gas phase N2O
+character(len=11) :: YCH4   = 'CH4        ' !< Gas phase CH4
+character(len=11) :: YOH    = 'OH         ' !< Gas phase OH
+character(len=11) :: YHCO   = 'HCO        ' !< Gas phase HCO
+character(len=11) :: YCN    = 'CN         ' !< Gas phase CN
+character(len=11) :: YHCN   = 'HCN        ' !< Gas phase HCN
+character(len=11) :: YHNC   = 'HNC        ' !< Gas phase HNC
+character(len=11) :: YNH    = 'NH         ' !< Gas phase NH
+character(len=11) :: YNH2   = 'NH2        ' !< Gas phase NH2
+character(len=11) :: YNH3   = 'NH3        ' !< Gas phase NH3
 
 
 
@@ -367,7 +367,7 @@ character(len=80) :: GRAIN_TEMPERATURE_TYPE = 'fixed' !< ('gas', 'computed', 'ta
 procedure(get_grain_temperature_interface), pointer :: get_grain_temperature !< Pointer toward the routine that will calculate grain temperature
 
 abstract interface 
-  subroutine get_grain_temperature_interface(space,time, gas_temperature, av, grain_temperature)
+  subroutine get_grain_temperature_interface(space,time, gastemperature, av, grain_temperature)
   import
   
   implicit none
@@ -375,7 +375,7 @@ abstract interface
   ! Inputs
   integer, intent(in) :: space !<[in] current spatial point in 1D
   real(double_precision), intent(in) :: time !<[in] current time of the simulation [s]
-  real(double_precision), intent(in) :: gas_temperature !<[in] gas temperature [K]
+  real(double_precision), intent(in) :: gastemperature !<[in] gas temperature [K]
   real(double_precision), intent(in) :: av !<[in] visual extinction [mag]
   
   ! Outputs

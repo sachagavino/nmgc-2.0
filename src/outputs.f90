@@ -7,46 +7,33 @@ use gasgrain
 
 implicit none
 
-! Locals
-character(len=80) :: filename_output
-integer :: species, output, idx_1D ! index for loops
-logical :: isDefined
 
-character(len=80) :: output_format,output_format1,output_format2 !< format used to output data
-character(len=180) :: sys_cmd !< character to call sys command
-
-real(double_precision), dimension(:,:,:), allocatable :: abundances_out !< abundances over time for each species. (nb_outputs, nb_species)
-
-real(double_precision), dimension(:), allocatable :: time !< Simulation time [s]
-real(double_precision), dimension(:,:), allocatable :: gas_temperature_out !< [K]
-real(double_precision), dimension(:,:), allocatable :: dust_temperature_out !< [K]
-real(double_precision), dimension(:,:), allocatable :: density !< [part/cm^3] 
-real(double_precision), dimension(:,:), allocatable :: visual_extinction_out !< visual extinction [mag]
-real(double_precision), dimension(:), allocatable :: x_rate !< X ionisation rate [s-1]
-! character(2) :: c_i !character variable to convert integer value of j to character j
-! integer      :: i,j,ic_i !convert character c_i to integer ic_i
 
 contains
 
-subroutine init_outputs()
+subroutine get_outputs()
+  implicit none
+! Locals
+  character(len=80) :: filename_output
+  integer :: species, output, idx_1D ! index for loops
+  logical :: isDefined
+  
+  character(len=80) :: output_format,output_format1,output_format2 !< format used to output data
+  character(len=180) :: sys_cmd !< character to call sys command
+  
+  real(double_precision), dimension(:,:,:), allocatable :: abundances_out !< abundances over time for each species. (nb_outputs, nb_species)
+  
+  real(double_precision), dimension(:), allocatable :: time !< Simulation time [s]
+  real(double_precision), dimension(:,:), allocatable :: gas_temperature_out !< [K]
+  real(double_precision), dimension(:,:), allocatable :: dust_temperature_out !< [K]
+  real(double_precision), dimension(:,:), allocatable :: density !< [part/cm^3] 
+  real(double_precision), dimension(:,:), allocatable :: visual_extinction_out !< visual extinction [mag]
+  real(double_precision), dimension(:), allocatable :: x_rate !< X ionisation rate [s-1]
+  character(2) :: c_i !character variable to convert integer value of j to character j
+  integer      :: i,ic_i !convert character c_i to integer ic_i
 
   ! Initialise all variables from the global_variables module. Only some of them are used here.
-  ! call initialisation()
-
-  ! We calculate the total number of outputs by checking for each file if it exist or not.
-  nb_outputs = 0
-  isDefined = .true.
-  do while(isDefined)
-    nb_outputs = nb_outputs + 1
-    write(filename_output, '(a,i0.6,a)') 'abundances.',nb_outputs,'.out'
-    inquire(file=filename_output, exist=isDefined)
-
-  enddo
-  nb_outputs = nb_outputs - 1
-
-  write(*,'(a,i0)') 'Spatial resolution: ', spatial_resolution
-  write(*,'(a,i0)') 'Number of time outputs: ', nb_outputs
-  write(*,'(a,i0)') 'Number of species: ', nb_species
+  ! call init_gasgrain()
 
   ! We allocate the output arrays
   allocate(time(nb_outputs))
@@ -98,14 +85,14 @@ subroutine init_outputs()
   ! Remove all existing *.ml if needed. Will return a warning in standard output if nothing exists
   call system("rm ml/*.ml")
 
-end subroutine init_outputs
+! end subroutine init_outputs
 
 !####################################################@@
 ! This part is to write one file per species, each line being one output time
 !####################################################@@
 
-subroutine write_outputs_ab()
-
+! subroutine write_outputs_ab()
+  ! implicit none
   if (spatial_resolution.gt.1) then
     write(filename_output, '(a,a,a)') 'ab/space.ab'
     open(10, file=filename_output)
@@ -157,11 +144,11 @@ subroutine write_outputs_ab()
   ! achar(13) is carriage return '\r'. Allow to go back to the beginning of the line
   write(*,'(a,a)') achar(13), 'Writing output files in ab/... Done'
 
-end subroutine write_outputs_ab
+! end subroutine write_outputs_ab
 
 !--------------------------------------------------------------------------------------------------------------------
 ! The next write will be written in the same line
-subroutine write_outputs_ml()
+! subroutine write_outputs_ml()
   write(*,'(a)', advance='yes') 'Writing mono layer data for grain species in *.ml ASCII files in the folder ml/...'
   ! We write ASCII output file, one file per species
 
@@ -213,13 +200,13 @@ subroutine write_outputs_ml()
     close(100+i)
   enddo 
 
-end subroutine write_outputs_ml
+! end subroutine write_outputs_ml
 
 
 !####################################################@@
 ! This part is to write one file per output time, each line being one species
 !####################################################@@
-subroutine write_outputs_struct()
+! subroutine write_outputs_struct()
 
   !~ ! The next write will be written in the same line
   !~ write(*,'(a)', advance='no') 'Writing output ASCII files...'
@@ -269,6 +256,6 @@ subroutine write_outputs_struct()
   ! achar(13) is carriage return '\r'. Allow to go back to the beginning of the line
   write(*,'(a,a)') achar(13), 'Writing structure output files in struct/... Done'
 
-end subroutine write_outputs_struct
+end subroutine get_outputs
 
 end module outputs

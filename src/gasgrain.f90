@@ -3,8 +3,7 @@
 !******************************************************************************
 !
 ! DESCRIPTION: 
-!> @brief Module that contains all the main routines of nmgc. Usefull to 
-!! use them in several programs such as nautilus and unitary_tests for instance. \n\n
+!> @brief Module that contains all the main routines of nmgc. \n\n
 !!
 !
 !******************************************************************************
@@ -33,10 +32,10 @@ contains
 !
 ! DESCRIPTION: 
 !> @brief Routine that contain all initialisation that needs to be done in the code
-!! before the integration
+!! before the integration scheme
 !
 !%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
-subroutine initialisation()
+subroutine init_gasgrain()
 use global_variables
 
 implicit none
@@ -92,7 +91,7 @@ select case(GRAIN_TEMPERATURE_TYPE)
   case default
     write(error_unit,*) 'The GRAIN_TEMPERATURE_TYPE="', GRAIN_TEMPERATURE_TYPE,'" cannot be found.'
     write(error_unit,*) 'Values possible : fixed, table_evolv, table_1D, gas, computed'
-    write(error_unit, '(a)') 'Error in subroutine initialisation.' 
+    write(error_unit, '(a)') 'Error in subroutine init_gasgrain.' 
     call exit(10)
 end select
 
@@ -119,7 +118,7 @@ select case(STRUCTURE_TYPE)
   case default
     write(error_unit,*) 'The STRUCTURE_TYPE="', STRUCTURE_TYPE,'" cannot be found.'
     write(error_unit,*) 'Values possible : 0D, 1D_diff, 1D_no_diff'
-    write(error_unit, '(a)') 'Error in subroutine initialisation.' 
+    write(error_unit, '(a)') 'Error in subroutine init_gasgrain.' 
     call exit(21)
 end select
 
@@ -252,7 +251,7 @@ if (spatial_resolution.eq.1) then
                               gas_temperature=gas_temperature(1)) ! Outputs
 endif
 
-call get_grain_temperature(space=1,time=current_time, gas_temperature=gas_temperature(1), Av=visual_extinction(1), & ! Inputs
+call get_grain_temperature(space=1,time=current_time, gastemperature=gas_temperature(1), Av=visual_extinction(1), & ! Inputs
       grain_temperature=dust_temperature(:,1)) ! Outputs
 
 ! We can't add input variables in dlsodes called routines, so we must store the values as global variables
@@ -298,7 +297,11 @@ call preliminary_tests()
 
 
 if (multi_grain.eq.1) then
-  write(stdo,*) "               ---- THIS IS MULTI-GRAIN MODE ----               "
+  write(stdo,*) ""
+  write(stdo,*) "================================================================"
+  write(stdo,*) "====               THIS IS MULTI-GRAIN MODE                 ===="
+  write(stdo,*) "================================================================"
+  write(stdo,*) ""
   call flush(stdo)
 endif
 
@@ -346,7 +349,7 @@ WRITE(*,'(a)')'----> Initialization is done. Integration starts now...'
 WRITE(*,'(a)')""
 call flush(stdo)
 
-end subroutine initialisation
+end subroutine init_gasgrain
 
 
 

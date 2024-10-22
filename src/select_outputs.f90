@@ -35,7 +35,7 @@ real(double_precision), dimension(:), allocatable :: x_rate !< X ionisation rate
 integer, dimension(:), allocatable :: compt
 
 ! Initialise all variables from the global_variables module. Only some of them are used here.
-call initialisation()
+call init_gasgrain()
 
 ! We calculate the total number of outputs by checking for each file if it exist or not.
 nb_outputs = 0

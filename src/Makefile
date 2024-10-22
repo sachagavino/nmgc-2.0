@@ -45,13 +45,11 @@ SRCOPKDMAIN    = $(SRC)/opkdmain.f90
 SRCPRATES      = $(SRC)/photorates.f90
 SRCSHIELD      = $(SRC)/shielding.f90
 SRCSTRUCT      = $(SRC)/structure.f90
-SRCTEST        = $(SRC)/unitary_tests.f90
 SRCUTIL        = $(SRC)/utilities.f90
-#SRCUSERDEF     = ./nmgc_profile
 
 OBJ            	= main.o gasgrain.o dust_temperature_module.o \
                 global_variables.o input_output.o iso_fortran_env.o \
-				numerical_types.o outputs.o \
+				numerical_types.o outputs.o rates.o major_reactions.o \
 				ode_solver.o opkda1.o opkda2.o opkdmain.o photorates.o \
 				shielding.o structure.o utilities.o
 
@@ -66,7 +64,8 @@ AMODULES		= iso_fortran_env.o numerical_types.o
 BMODULES		= $(AMODULES)  utilities.o global_variables.o dust_temperature_module.o photorates.o structure.o shielding.o
 CMODULES		= $(BMODULES) input_output.o
 DMODULES 	  	= ode_solver.o   
-GMODULES		= gasgrain.o
+GMODULES		= gasgrain.o 
+PMODULES		= outputs.o rates.o major_reactions.o
 
 
 #################################################
@@ -78,7 +77,7 @@ all:	            		nmgc
 nmgc:             			$(OBJ) Makefile
 	                		$(FF) $(LFLAGS) $(OBJ) -o $@ 
 
-main.o:        				$(SRCMAIN)  $(CMODULES) $(GMODULES) Makefile
+main.o:        				$(SRCMAIN)  $(CMODULES) $(GMODULES) $(PMODULES) Makefile
 							$(FF) -c $(FFLAGS)  $(SRCMAIN) -o $@
 
 iso_fortran_env.o: 			$(SRCISO) Makefile
@@ -114,14 +113,14 @@ photorates.o:     			$(SRCPRATES) $(AMODULES) Makefile
 input_output.o:     		$(SRCINPUTOUTPUT) $(AMODULES) Makefile
 	                		$(FF) -c $(FFLAGS)  $(SRCINPUTOUTPUT) -o $@
 
-# major_reactions.o:     		$(SRCMAJOR) $(BMODULES) Makefile
-# 	                		$(FF) -c $(FFLAGS)  $(SRCMAJOR) -o $@
+major_reactions.o:     		$(SRCMAJOR) $(BMODULES) $(GMODULES) Makefile
+	                		$(FF) -c $(FFLAGS)  $(SRCMAJOR) -o $@
 
 outputs.o:     				$(SRCOUTPUT) $(BMODULES) $(GMODULES) Makefile
 	                		$(FF) -c $(FFLAGS)  $(SRCOUTPUT) -o $@
 
-# rates.o:     				$(SRCRATES) $(BMODULES) Makefile
-# 	                		$(FF) -c $(FFLAGS) $(SRCRATES) -o $@
+rates.o:     				$(SRCRATES) $(BMODULES) $(GMODULES) Makefile
+	                		$(FF) -c $(FFLAGS) $(SRCRATES) -o $@
 
 # select_outputs.o:     		$(SRCSELECT) $(BMODULES) Makefile
 # 	                		$(FF) -c $(FFLAGS)  $(SRCSELECT) -o $@
@@ -138,8 +137,6 @@ opkda2.o: 					$(SRCOPKDA2)  Makefile
 opkdmain.o: 				$(SRCOPKDMAIN)  Makefile
 	                		$(FF) -c -w $(FFLAGS) $(MISMATCH) $(SRCOPKDMAIN) -o $@
 
-unitary_tests.o:     		$(SRCTEST) $(BMODULES) Makefile
-	                		$(FF) -c $(FFLAGS)  $(SRCTEST) -o $@
 
 install:	    nmgc
 				./install.pl

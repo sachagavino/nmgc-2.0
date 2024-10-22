@@ -15,7 +15,7 @@ character(len=80) :: filename_output
 integer :: species, output, reaction, i, k ! index for loops
 integer :: nb_points !< number of spatial points the user wants rates at.
 
-logical :: isDefined
+! logical :: isDefined
 real(double_precision) :: tmp !< temporary variable
 
 character(len=80) :: rate_format, time_format !< string to store specific format used to output datas
@@ -42,28 +42,13 @@ real(double_precision), allocatable, dimension(:,:) :: reaction_fluxes
 ! User asked values
 logical :: change_space = .true. !< If true, ask the user for a value
 logical :: wrong_1D !< Flags for while loops when asking the user something
-integer :: user_1D_id !< designed spatial id by the user
+! integer :: user_1D_id !< designed spatial id by the user
 integer, dimension(:), allocatable :: user_1D_id_list !< designed spatial id_s by the user
 character(len=5) :: str_user_id
 
 ! Initialise all variables from the global_variables module. Only some of them are used here.
-call initialisation()
+!call init_gasgrain()
 
-! We calculate the total number of outputs by checking for each file if it exist or not.
-nb_outputs = 0
-isDefined = .true.
-do while(isDefined)
-  nb_outputs = nb_outputs + 1
-  write(filename_output, '(a,i0.6,a)') 'abundances.',nb_outputs,'.out'
-  inquire(file=filename_output, exist=isDefined)
-
-enddo
-nb_outputs = nb_outputs - 1
-
-write(*,'(a, i0)') 'Spatial resolution: ', spatial_resolution
-write(*,'(a, i0)') 'Number of time outputs: ', nb_outputs
-write(*,'(a, i0)') 'Number of species: ', nb_species
-write(*,'(a, i0)') 'Number of reactions: ', nb_reactions
 
 ! We allocate the output arrays
 
@@ -83,8 +68,9 @@ allocate(reaction_rates_out(spatial_resolution,nb_outputs, nb_reactions))
 ! Outputs
 allocate(reaction_fluxes(nb_outputs, nb_reactions))
 
+
 ! What spatial point ?
-40 if (change_space) then
+if (change_space) then
   if (spatial_resolution.ne.1) then
       wrong_1D = .true.
       write(*,'(a,i0,a)') 'select a number of points needed (from 1 to ', spatial_resolution, '):'
