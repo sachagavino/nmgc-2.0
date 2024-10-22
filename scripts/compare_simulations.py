@@ -197,7 +197,7 @@ def compare2files(ori_files,new_files):
       print(comp)
       
     if (no_diff != []):
-      print "No differences seen on :",', '.join(no_diff)
+      print("No differences seen on :",', '.join(no_diff))
   else:
     print("Everything OK")  
   
@@ -362,7 +362,7 @@ diff = ASCIICompare(naut_or_stdout, naut_new_stdout)
 if (diff != None):
   print("\nTest of nautilus")
   print("\tFor the Output of nautilus")
-  print diff
+  print("diff")
 
 # We create names including the folder in which they are
 RATES_FILENAMES = [os.path.join(NEW_TEST, filename) for filename in RATES_FILENAMES]
