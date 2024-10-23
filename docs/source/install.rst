@@ -52,7 +52,7 @@ First, if you want to compile with something else than ``gfortran``, you will ha
 
     FF = gfortran
 
-Switch to whatever Fortran-90 compiler you want to use.
+so you can switch to whatever Fortran-90 compiler you want to use.
 
 Now, still in the ``src/`` folder, you want to compile the software by typing:: 
 
@@ -63,17 +63,17 @@ You should see the executable called ``nmgc`` appear in ``src/``.
 Additionnally, the perl script will check if the ``$HOME/bin`` directory exists on your machine. If not, it will ask you to create one (you should say yes). 
 Then, it will add a link ``nmgc`` in ``$HOME/bin``. This will allow you to execute the software everywhere you want to. For this to be possible, the 
 ``$HOME/bin`` directory must be in the path of your current shell. The script should warn you during the installation if it is not the case.
-If ``make install`` told you that the ``bin/`` directory is not in your path, you can do it yourself by adding the following line in your ``$HOME/.zshrc``::
+If ``make install`` tells you that the ``bin/`` directory is not in your path, you can do it yourself by adding the following line in your ``$HOME/.zshrc``::
 
     export PATH=/<YOUR HOME>/bin:$PATH
 
-Note that ``<YOUR HOME>`` is what you obtain when you type ``echo $HOME`` in your shell. Depending on your needs, you might want to use another configuration
-file such as ``.bash_profile`` instead of the suggested ``.zshrc``. This should also work fine.
+Note that ``<YOUR HOME>`` is what you obtain when you type ``echo $HOME`` in your shell. Depending on your OS or needs, you might want to use another configuration
+file, ``.bashrc`` for instance, instead of the suggested ``.zshrc``.
 
 Don't forget to type ``source $HOME/.zshrc`` and ``rehash`` after that, so the new path is recognized by your shell (or alternatively opening a new terminal will do it).
 
-You can now run the code anywhere. If you want to know it went well, open a terminal (or use the same one as you used to install the code), go to any folder, 
-and type ``nmgc``. If the termianl shows the following text::
+You can now execute the code anywhere. If you want to know the installation went well, open a terminal (or use the same one as you have used so far), go to any folder, 
+and type ``nmgc``. If the terminal shows the following text::
 
     ================================================================
           WELCOME TO NMGC: THE MULTI-GRAIN VERSION OF NAUTILUS
