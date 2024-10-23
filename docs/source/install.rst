@@ -72,29 +72,27 @@ file such as ``.bash_profile`` instead of the suggested ``.zshrc``. This should 
 
 Don't forget to type ``source $HOME/.zshrc`` and ``rehash`` after that, so the new path is recognized by your shell (or alternatively opening a new terminal will do it).
 
-You can now run the code anywhere from a terminal. If you want to know it went well, open a terminal (or use the same as you used to install the code), go to any folder, 
-and type ``nmgc``. This should display the following text::
+You can now run the code anywhere. If you want to know it went well, open a terminal (or use the same one as you used to install the code), go to any folder, 
+and type ``nmgc``. If the termianl shows the following text::
 
     ================================================================
-        WELCOME TO NMGC: THE MULTI-GRAIN VERSION OF NAUTILUS
-
-                            VERSION 2.0
+          WELCOME TO NMGC: THE MULTI-GRAIN VERSION OF NAUTILUS
 
                 To keep up-to-date follow NMGC on github
 
                 https://github.com/sachagavino/nmgc-2.0
 
                 Please, read the NMGC documentation at
-                                http://
+                https://nmgc-20.readthedocs.io/en/latest/
     ================================================================
 
-    Please, use one of these options to generate action:
+    Please, use one of these options:
     run        : Integrate the evolution of the chemical scheme
     outputs    : Read binary outputs to convert into ASCII format
     rates      : Create flux and rate coefficients at each time
     major      : Find the major reactions for each time and species
 
  
-
+Then the installation went well and you can start using the software.
 
 

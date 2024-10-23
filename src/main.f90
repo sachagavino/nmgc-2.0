@@ -818,7 +818,7 @@ subroutine interpet_command_line(gotit,fromstdi,quit)
 
   if(.not.gotit) then
     call write_banner()
-    write(stdo,*) 'Please, use one of these options to generate action:'
+    write(stdo,*) 'Please, use one of these options:'
     write(stdo,*) '  run        : Integrate the evolution of the chemical scheme'
     write(stdo,*) '  outputs    : Read binary outputs to convert into ASCII format'
     write(stdo,*) '  rates      : Create flux and rate coefficients at each time'
@@ -839,9 +839,7 @@ subroutine write_banner()
   write(stdo,*) '================================================================'
   write(stdo,*) '      WELCOME TO NMGC: THE MULTI-GRAIN VERSION OF NAUTILUS      '
   write(stdo,*) '                                                                '
-  write(stdo,*) '                         VERSION 2.0                            '
-  write(stdo,*) '                                                                '
-  write(stdo,*) '            To keep up-to-date follow NMGC on github            '
+  write(stdo,*) '           To keep up-to-date follow NMGC on github             '
   write(stdo,*) '                                                                '
   write(stdo,*) '            https://github.com/sachagavino/nmgc-2.0             '
   write(stdo,*) '                                                                '
