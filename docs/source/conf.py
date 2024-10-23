@@ -49,14 +49,6 @@ templates_path = ['_templates']
 
 latex_elements = {
     'sphinxsetup': 'VerbatimColor={rgb}{0.95,0.95,0.95}',
-
-
-    'papersize': 'a4paper',
-    'pointsize': '12pt',
-    'preamble': r'''
-    \usepackage[none]{hyphenat}
-    \usepackage[document]{ragged2e}
-    '''
 }
 
 
