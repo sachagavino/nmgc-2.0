@@ -23,21 +23,27 @@ INPUT (required): activation_energies.in
 INPUT (required): element.in
 ==================
 
-.. _sec-greac-input:
-INPUT (required): gas_reactions.in
+
+
+.. _sec-network-input:
+INPUT (required): chemical network
 ==================
+
+.. _sec-greac-input:
+gas_reactions.in
+---------------------
 
 .. _sec-gspec-input:
-INPUT (required): gas_species.in
-==================
+gas_species.in
+---------------------
 
 .. _sec-grreac-input:
-INPUT (required): grain_reactions.in
-==================
+grain_reactions.in
+---------------------
 
 .. _sec-grspec-input:
-INPUT (required): grain_species.in
-==================
+grain_species.in
+---------------------
 
 .. _sec-param-input:
 INPUT (required): parameters.in
