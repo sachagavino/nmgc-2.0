@@ -46,3 +46,19 @@ The software has been tested with the ``gfortran`` compiler only, but there is n
 
 Compiling the code
 =================
+
+To compile the code, enter the ``src/`` folder. 
+First, if you want to compile with something else than ``gfortran``, you will have to edit the ``Makefile`` and change this line:: Fortran-90
+
+    FF = gfortran
+
+Switch to whatever Fortran-90 compiler you want to use.
+
+Now, still in the ``src/`` folder, you want to compile the software by typing:: 
+
+    make install
+
+You should see the executable called ``nmgc`` appear in ``src/``. Additionnally, the perl script will check if a ``$HOME/bin`` exists on your machine.
+If not, it will ask you to create one (you should say yes). Then it will add a link ``nmgc`` in it so you can execute the software in all working directory.
+
+
