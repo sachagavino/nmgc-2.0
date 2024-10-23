@@ -9,6 +9,8 @@ Contents
 .. toctree::
 
    introduction
-   overview
+   install
+   basicuse
    astrocheminside
    inputoutput
+   particularities
