@@ -9,4 +9,6 @@ Contents
 .. toctree::
 
    introduction
+   overview
+   astrocheminside
    inputoutput
