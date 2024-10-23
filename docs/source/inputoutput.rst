@@ -3,12 +3,11 @@
 The input and output files of NMGC
 ***************************************
 
-NMGC is written in fortran-90. 
+The input files are the same as for the official version of Nautilus, except for a few differences. Whenever differences exist between the two version, they are mentioned and described below in each section.   
 
+NMGC at minimum six inputs to be able to run. They are described in the following sections whose names are followed by `(required)`. There are three additional optional input files
+that can be added. Wether or not you use these files will depend on your needs, which will be discussed in the following sections whose names are followed by `(optional)`.
 
-* NMGC needs five input files:
-
-  #. parameters.in: this file is...
 
 
 .. _sec-ab-input:
