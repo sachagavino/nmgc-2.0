@@ -64,3 +64,12 @@ INPUT (optional): 1D_grain_sizes.in
 .. _sec-static-input:
 INPUT (optional): 1D_static.in
 ==================
+
+.. _sec-ab-output:
+OUTPUT: abundances.000.out
+==================
+
+.. _sec-ab-output:
+OUTPUT: rates.000.out
+==================
+
