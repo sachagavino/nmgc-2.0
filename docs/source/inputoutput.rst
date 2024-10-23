@@ -1,6 +1,6 @@
 .. _chap-input-files:
 
-Main input and output files of NMGC
+The input and output files of NMGC
 ***************************************
 
 NMGC is written in fortran-90. 
