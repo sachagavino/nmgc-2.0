@@ -11,11 +11,11 @@ From a terminal, go to a directory where you want to install the code, and type:
 $ git clone https://github.com/sachagavino/nmgc-2.0.git
 ```
 
-This will create a folder `nmgc-2.0/` in your current repository, which you can access:
+This will create a folder `nmgc-2.0/` in your current repository, which you can access::
 
-```
+
 $ cd nmgc-2.0/
-```
+
 
 To make sure you use the latest version, you can type: 
 
