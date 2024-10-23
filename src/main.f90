@@ -846,7 +846,7 @@ subroutine write_banner()
   write(stdo,*) '            https://github.com/sachagavino/nmgc-2.0             '
   write(stdo,*) '                                                                '
   write(stdo,*) '             Please, read the NMGC documentation at             '
-  write(stdo,*) '                           http://                              '
+  write(stdo,*) '            https://nmgc-20.readthedocs.io/en/latest/           '
   write(stdo,*) '================================================================'
   write(stdo,*) ' '
   call flush(stdo)

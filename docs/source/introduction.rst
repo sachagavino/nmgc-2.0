@@ -16,4 +16,4 @@ NMGC is derived from the Nautilus code developed in the Bordeaux astrochemistry 
 State University (OSU model) later on. It has been continuously developed since then. 
 It uses the LSODES (Livermore Solver for Ordinary Differential Equations with general Sparse Jacobian matrix) solver, part of ODEPACK8 (Hindmarsh 1983).
 A detailed description is given in Semenov et al. (2010). Major changes have been done over the last few years. The three-phase model included in Nautilus (and NMGC) was developed 
-in Bordeaux (Ruaud et al. 2016). The original NMGC was developed in Bordeaux by Iqbal & Wakelam (2018), which was later adapted for disks (Gavino et al 2021).  
+in Bordeaux (Ruaud et al. 2016). The original NMGC was developed in Bordeaux by Iqbal & Wakelam (2018), which was later adapted for protoplanetary disks and costum grain size distributions (Gavino et al 2021).  

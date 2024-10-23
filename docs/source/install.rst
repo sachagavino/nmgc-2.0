@@ -11,7 +11,7 @@ From a terminal, go to a directory where you want to install the code, and type:
     git clone https://github.com/sachagavino/nmgc-2.0.git
 
 
-This will create a folder ``nmgc-2.0/`` in your current repository, which you can access::
+This will create a folder ``nmgc-2.0/``, which contains the full git repository. You can now access the package::
 
 
     cd nmgc-2.0/
@@ -58,7 +58,43 @@ Now, still in the ``src/`` folder, you want to compile the software by typing::
 
     make install
 
-You should see the executable called ``nmgc`` appear in ``src/``. Additionnally, the perl script will check if a ``$HOME/bin`` exists on your machine.
-If not, it will ask you to create one (you should say yes). Then it will add a link ``nmgc`` in it so you can execute the software in all working directory.
+You should see the executable called ``nmgc`` appear in ``src/``. 
+
+Additionnally, the perl script will check if the ``$HOME/bin`` directory exists on your machine. If not, it will ask you to create one (you should say yes). 
+Then, it will add a link ``nmgc`` in ``$HOME/bin``. This will allow you to execute the software everywhere you want to. For this to be possible, the 
+``$HOME/bin`` directory must be in the path of your current shell. The script should warn you during the installation if it is not the case.
+If ``make install`` told you that the ``bin/`` directory is not in your path, you can do it yourself by adding the following line in your ``$HOME/.zshrc``::
+
+    export PATH=/<YOUR HOME>/bin:$PATH
+
+Note that ``<YOUR HOME>`` is what you obtain when you type ``echo $HOME`` in your shell. Depending on your needs, you might want to use another configuration
+file such as ``.bash_profile`` instead of the suggested ``.zshrc``. This should also work fine.
+
+Don't forget to type ``source $HOME/.zshrc`` and ``rehash`` after that, so the new path is recognized by your shell (or alternatively opening a new terminal will do it).
+
+You can now run the code anywhere from a terminal. If you want to know it went well, open a terminal (or use the same as you used to install the code), go to any folder, 
+and type ``nmgc``. This should display the following text::
+
+    ================================================================
+        WELCOME TO NMGC: THE MULTI-GRAIN VERSION OF NAUTILUS
+
+                            VERSION 2.0
+
+                To keep up-to-date follow NMGC on github
+
+                https://github.com/sachagavino/nmgc-2.0
+
+                Please, read the NMGC documentation at
+                                http://
+    ================================================================
+
+    Please, use one of these options to generate action:
+    run        : Integrate the evolution of the chemical scheme
+    outputs    : Read binary outputs to convert into ASCII format
+    rates      : Create flux and rate coefficients at each time
+    major      : Find the major reactions for each time and species
+
+ 
+
 
 
