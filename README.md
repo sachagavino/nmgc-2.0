@@ -3,11 +3,12 @@
 ## Introduction
 The Nautilus Multi-Grain Code (NMGC) is a gas-grain code derived from the NAUTILUS code that is able to deal with multiple grain species for astrophysical environments. It is written in Fortran 90.
 
-## Download
-You can find the user's guide [here][1].
+## User's guide
+You can find how to download and use NMGC [here][1].
 
 ## Branches
 main: stable up-to-date version.
+
 dev: use it at your own risks.
 
 ## News
