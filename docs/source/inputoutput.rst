@@ -22,8 +22,6 @@ INPUT (required): activation_energies.in
 INPUT (required): element.in
 ==================
 
-
-
 .. _sec-network-input:
 INPUT (required): chemical network
 ==================
