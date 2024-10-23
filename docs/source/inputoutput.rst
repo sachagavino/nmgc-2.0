@@ -13,5 +13,5 @@ NMGC is written in fortran-90.
 
 .. _sec-parameters.in:
 
-INPUT: parameters.in
+INPUT (required): parameters.in
 ==================
