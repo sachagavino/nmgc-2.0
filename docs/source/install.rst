@@ -86,7 +86,7 @@ and type ``nmgc``. If the terminal shows the following text::
                 https://nmgc-20.readthedocs.io/en/latest/
     ================================================================
 
-    Please, use one of these options:
+    Please, use one of these actions:
     run        : Integrate the evolution of the chemical scheme
     outputs    : Read binary outputs to convert into ASCII format
     rates      : Create flux and rate coefficients at each time

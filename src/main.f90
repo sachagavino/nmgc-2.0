@@ -818,7 +818,7 @@ subroutine interpet_command_line(gotit,fromstdi,quit)
 
   if(.not.gotit) then
     call write_banner()
-    write(stdo,*) 'Please, use one of these options:'
+    write(stdo,*) 'Please, use one of these actions:'
     write(stdo,*) '  run        : Integrate the evolution of the chemical scheme'
     write(stdo,*) '  outputs    : Read binary outputs to convert into ASCII format'
     write(stdo,*) '  rates      : Create flux and rate coefficients at each time'
