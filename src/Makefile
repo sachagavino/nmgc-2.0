@@ -1,22 +1,9 @@
 SRC = .
-#SRC = /Users/sachagavino/science/programs/NMGC/version_1.0/src
+#SRC = /Users/sachagavino/science/programs/NMGC/version_2.0/src
 
-# Optimize
-OPTIM = -O2 -fopenmp
-# OPTIM = -O2 
-
-# The system defines used in executing make
-# FF = /Users/sachagavino/?
-
-# For using the OpenMP parallel version of NMGC one has to add '-fopenmp' in
-# the next command line (see also the NMGC manual).
 FF = gfortran
 
-# Glueing all the things together
-FFLAGS   = $(OPTIM) $(BCHECK)
-#FFLAGS   = $(OPTIM)
-#-Wall
-LFLAGS   = $(OPTIM) 
+FFLAGS   = $(BCHECK)
 
 MISMATCH = -fallow-argument-mismatch # In order to have type mismatches errors coming \
 from the old ODEPACK Fortran 77 sources still be compiled.
