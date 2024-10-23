@@ -5,7 +5,7 @@ How to use the code
 Quickstart
 =================
 
-Type nmgc in your terminal.
+Type ``nmgc`` in your terminal.
 
 The four actions of the code
 =================
