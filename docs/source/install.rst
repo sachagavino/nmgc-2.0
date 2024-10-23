@@ -31,17 +31,17 @@ The following softwares are required:
 
 #. ``make``
 
-The GNU Make tool is required to compile the software. In principle, it should already be pre-installed on your machine.
-In case it is not, you can type ``sudo apt-get install make`` if you are working on Linux, or ``brew install make`` regardless of your OS.
+    The GNU Make tool is required to compile the software. In principle, it should already be pre-installed on your machine.
+    In case it is not, you can type ``sudo apt-get install make`` if you are working on Linux, or ``brew install make`` regardless of your OS.
 
 #. ``perl``
 
-Perl is a Unix-friendly scripting language that unable text processing tasks. It is required to copy the executable in the $HOME/bin directory.
-Note that this requirements will be removed in the next update of NMGC.
+    Perl is a Unix-friendly scripting language that unable text processing tasks. It is required to copy the executable in the $HOME/bin directory.
+    Note that this requirements will be removed in the next update of NMGC.
 
 #. ``Fortran-90 compiler``
 
-The software has been tested with the ``gfortran`` compiler only, but there is no reason it should not be working with the others. 
+    The software has been tested with the ``gfortran`` compiler only, but there is no reason it should not be working with the others. 
 
 
 Compiling the code
