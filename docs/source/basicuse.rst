@@ -5,7 +5,7 @@ How to use the code
 Quickstart
 =================
 
-We saw that typing ``nmgc`` in the shell displays the software banner, with a bunch of suggested actions. These actions are the core of Nautilus and you will need them to use the software. 
+We saw that typing ``nmgc`` in the shell displays the software banner, with a bunch of suggested actions. **These actions are the core of Nautilus and you will need them to use the software.** 
 A detailed description of these options is provided below.
 
 
@@ -58,7 +58,7 @@ If you run ``major_reactions``, the software will
 
 The four modes
 =================
-NMGC can be run by using different modes: two dimensional modes, and two grain size modes. These modes are set in ``parameters.in`` (see Section :ref:`chap-input-files`).
+NMGC can be run by using different modes: **two dimensional modes, and two grain size modes.** These modes are set in ``parameters.in`` (see Section :ref:`chap-input-files`).
 
 Dimensions
 ---------------------
@@ -71,5 +71,5 @@ NMGC also comes with two grain size modes, called ``multi-grain`` and ``single-g
 The ``multi-grain`` mode, on the other hand, is the main specificity of NMGC. If the user uses this mode, then NMGC considers a set of discretized grain populations, each with their own size, density and surface temperature.
 The grain size mode can be set in ``parameters.in``, using the flag ``multi-grain``. If ``multi-grain`` is set to ``0``, then the code works in single-grain mode. If ``multi-grain`` is set to ``1``, then the code works in multi-grain mode. 
 
-Of course, the grain size modes and dimensional modes can be used together (the two grain size modes can be run either in ``0D`` or ``1D``), making a total of four possible modes. 
+Of course, **the grain size modes and dimensional modes can be used together (the two grain size modes can be run either in ``0D`` or ``1D``), making a total of four possible modes.** 
 Typically, when the simulation is set to ``multi-grain`` mode, the grain parameters (sizes, densities, temperatures), are read either in the input file called ``0D_grain_sizes.in`` in ``0D`` mode, or in the input file called ``1D_grain_sizes.in`` in ``1D`` mode.
