@@ -52,7 +52,24 @@ This action generates two files.
 
 major_reactions
 ---------------------
+Say you want to find out about what were the major reactions that destroyed/produced a given species at a given time during your simulations. An easy way to do that is the action ``major_reactions``.  
+If you run ``major_reactions``, the software will 
 
 
 The four modes
 =================
+NMGC can be run by using different modes: two dimensional modes, and two grain size modes. These modes are set in ``parameters.in`` (see Section :ref:`chap-input-files`).
+
+Dimension
+---------------------
+NMGC has two dimensional modes, called ``0D`` and ``1D``. In the ``0D`` mode, the physical model is only composed of one cell, with a single density, temperature, UV flux value. This is a well-suited mode for homogeneous physical environements.
+The ``1D`` mode allows the user the build a more complex physical structure, compoed of cells, each of which with a specific physical condition. This is usually the preferred mode for non-homogeneous models such as protoplanetary disks. The users typically divide their model into a set of 1D NMGC simulations (usually referred to 1D+1 simulations).
+
+Grain size
+---------------------
+NMGC also comes with two grain size modes, called ``multi-grain`` and ``single-grain``. In the ``single-grain`` mode, NMGC works exactly like the main version of Nautilus (apart from a bunch of differences that are described in :ref:`chap-input-files`). 
+The ``multi-grain`` mode is the core of NMGC. If the user uses this mode, then NMGC considers a set of discretized grain populations, each with their own density and surface temperature.
+The grain size mode can be set in ``parameters.in``, using the flag ``multi-grain``. If ``multi-grain`` is set to ``0``, then the code works in single-grain mode. If ``multi-grain`` is set to ``1``, then the code works in multi-grain mode. 
+
+Of course, the grain size modes and dimensional modes can be used together (the two grain size modes can be run either in ``0D`` or ``1D``), making a total of four possible configurations. 
+Typically, when the simulation is set to ``multi-grain`` mode, the grain parameters (sizes, densities, temperatures), are read either in the input file called ``0D_grain_sizes.in`` if in ``0D`` mode, or in the input file called ``1D_grain_sizes.in`` if in ``1D`` mode.

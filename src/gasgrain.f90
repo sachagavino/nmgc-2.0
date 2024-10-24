@@ -297,36 +297,45 @@ call preliminary_tests()
 
 
 if (multi_grain.eq.1) then
-  write(stdo,*) ""
-  write(stdo,*) "================================================================"
-  write(stdo,*) "====               THIS IS MULTI-GRAIN MODE                 ===="
-  write(stdo,*) "================================================================"
-  write(stdo,*) ""
+  WRITE(stdo,*) ""
+  WRITE(stdo,*) "================================================================"
+  WRITE(stdo,*) "===                THIS IS MULTI-GRAIN MODE                  ==="
+  WRITE(stdo,*) "================================================================"
   call flush(stdo)
 endif
 
+if (multi_grain.eq.0) then
+  WRITE(stdo,*) ""
+  WRITE(stdo,*) "================================================================"
+  WRITE(stdo,*) "===                THIS IS SINGLE-GRAIN MODE                 ==="
+  WRITE(stdo,*) "================================================================"
+  call flush(stdo)
+endif
+
+
+! BANNER FOR THE FOUR MODES OF NMGC:
 if ((multi_grain.eq.1).and.(structure_type.eq.'0D')) then
-  write(stdo,*) "----------------------------------------------------------------"
-  write(stdo,*) "STRUCTURE:          0D                                          "
-  write(stdo,*) "GRAIN MODE:         multi-grain                                 "
-  write(stdo,*) "GRAIN PARAMETERS:   0D_grain_sizes.in                           "
+  WRITE(stdo,*) "STRUCTURE:          0D                                          "
+  WRITE(stdo,*) "GRAIN MODE:         multi-grain                                 "
+  WRITE(stdo,*) "GRAIN PARAMETERS:   0D_grain_sizes.in                           "
   WRITE(*,'(a,I3)') "NB OF GRAINS:     ", nb_grains
+  WRITE(stdo,*) ""
 elseif((multi_grain.eq.1).and.(structure_type.eq.'1D_no_diff')) then
-  WRITE(*,'(a)')'----------------------------------------------------------------------------------------------'
   WRITE(*,'(a)')"    STRUCTURE:          1D without diffusion               "
   WRITE(*,'(a)')"    GRAIN MODE:         multi-grain  "
   WRITE(*,'(a)')"    GRAIN PARAMETERS:   1D_grain_sizes.in"
   WRITE(*,'(a,I3)')"    NB OF GRAINS:  ", nb_grains
+  WRITE(stdo,*) ""
 elseif((multi_grain.eq.0).and.(structure_type.eq.'0D')) then
-  WRITE(*,'(a)')'----------------------------------------------------------------------------------------------'
   WRITE(*,'(a)')"    STRUCTURE:          0D  "
   WRITE(*,'(a)')"    GRAIN MODE:         single-grain  "
   WRITE(*,'(a)')"    GRAIN PARAMETERS:   parameters.in"
+  WRITE(stdo,*) ""
 elseif((multi_grain.eq.0).and.(structure_type.eq.'1D_no_diff')) then
-  WRITE(*,'(a)')'----------------------------------------------------------------------------------------------'
   WRITE(*,'(a)')"    STRUCTURE:          1D without diffusion               "
   WRITE(*,'(a)')"    GRAIN MODE:         single-grain  "
   WRITE(*,'(a)')"    GRAIN PARAMETERS:   1D_static.in"
+  WRITE(stdo,*) ""
 endif
 
 
