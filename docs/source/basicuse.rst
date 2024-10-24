@@ -52,7 +52,7 @@ This action generates two files:
 
 major_reactions
 ---------------------
-If you are interested in figuring out what were the major reactions that destroyed/produced a given chemical species at a given time during your simulations, an easy way to do that is the action ``major_reactions``.  
+If you are interested in figuring out what were the major reactions that destroyed/produced a given chemical species at a given time in your simulations, an easy way to do that is the action ``major_reactions``.  
 If you run ``major_reactions``, the software will run a script that will ask you to provide information about the species you are interested in, the time output, and the spatial location in your model. It will then provide all major reactions that destroyed or produced this species.
 
 
