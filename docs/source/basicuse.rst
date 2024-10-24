@@ -37,7 +37,7 @@ the time output. These files stores the outcome of your simulation i.e. the chem
 
 outputs
 ---------------------
-These output files mentioned above are not readable by default. There comes the action ``outputs``: the purpose of this action is to convert these binary files into ASCII, easy to read, output files.
+These output files described above are not readable by default. There comes the action ``outputs``. The purpose of this action is to convert these binary files into, easy to read, files in ASCII format.
 It means that you want to run the action ``outputs`` right after the action ``run`` ended (assuming the simulations went well). 
 The ``outputs`` action mainly generates three new folders called ``ab/``, ``ml/``, and ``struct/``.  
 
