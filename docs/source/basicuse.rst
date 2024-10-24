@@ -32,7 +32,7 @@ The four actions
 run
 ---------------------
 This action launches the main chemical scheme. The code reads the input files you provided (chemical network, physical model, initial abundances, etc.), and proceeds to
-compute the chemical evolution. At the end of the simulation, binary files are generated, in particualar the files abundances.00000i.out and rates.00000i.out, with ``i`` corresponding to
+compute the chemical evolution. At the end of the simulation, binary files are generated, in particular the files abundances.00000i.out and rates.00000i.out, with ``i`` corresponding to
 the time output. These files stores the outcome of your simulation i.e. the chemical abundances as a function of the integration time for each species and each spatial location.
 
 outputs
