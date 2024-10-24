@@ -5,26 +5,26 @@ The input and output files of NMGC
 
 The input files are the same as for the official version of Nautilus, except for a few differences. Whenever differences exist between the two version, they are mentioned and described below in each section.   
 
-NMGC needs at minimum six input files to be able to run. If one of these six files are missing, the code will automatically stop. They are described below and their name is followed by ``(required)``. 
+NMGC needs at minimum six inputs to be able to run. If one of these six files are missing, the code will automatically stop. They are described below and their name is followed by ``(required)``. 
 There are three additional optional input files that can be added. 
 Wether or not you use one or severals of these optional files will depend on your needs.
 
 
 
 .. _sec-ab-input:
-INPUT (required): abundances.in
+INPUT: abundances.in (required)
 ==================
 
 .. _sec-act-input:
-INPUT (required): activation_energies.in
+INPUT: activation_energies.in (required)
 ==================
 
 .. _sec-elm-input:
-INPUT (required): element.in
+INPUT: element.in (required)
 ==================
 
 .. _sec-network-input:
-INPUT (required): chemical network
+INPUT: chemical network (required)
 ==================
 
 .. _sec-greac-input:
@@ -44,23 +44,23 @@ grain_species.in
 ---------------------
 
 .. _sec-param-input:
-INPUT (required): parameters.in
+INPUT: parameters.in (required)
 ==================
 
 .. _sec-surf-input:
-INPUT (required): surface_parameters.in
+INPUT: surface_parameters.in (required)
 ==================
 
 .. _sec-0d-input:
-INPUT (optional): 0D_grain_sizes.in
+INPUT: 0D_grain_sizes.in (optional)
 ==================
 
 .. _sec-1d-input:
-INPUT (optional): 1D_grain_sizes.in
+INPUT: 1D_grain_sizes.in (optional)
 ==================
 
 .. _sec-static-input:
-INPUT (optional): 1D_static.in
+INPUT: 1D_static.in  (optional)
 ==================
 
 .. _sec-ab-output:
@@ -84,5 +84,11 @@ OUTPUT: info.out
 ==================
 
 OUTPUT: ab/, ml/, and struct/
+==================
+
+OUTPUT: rates.out
+==================
+
+OUTPUT: rate_coefficients.out
 ==================
 

@@ -39,11 +39,15 @@ outputs
 ---------------------
 These output files mentioned above are not readable by default. The purpose of the action ``outputs`` is to convert the binary files into ASCII, easy to read, output files.
 It means that you want to run the action ``outputs`` right after the ``run`` action ended (assuming the simulations went well). 
-The ``outputs`` action mainly generates three new folders called ``ab/``, ``ml/``, and ``struct/``.  
+The ``outputs`` action mainly generates three new folders called ``ab/``, ``ml/``, and ``struct/``  
 
 rates
 ---------------------
+This action generates two files. 
 
+* ``rates.out``: This 
+
+* ``rate_coefficients``:
 
 
 major_reactions
