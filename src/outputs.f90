@@ -19,7 +19,7 @@ subroutine get_outputs()
   logical :: isDefined
   
   character(len=80) :: output_format,output_format1,output_format2 !< format used to output data
-  character(len=180) :: sys_cmd !< character to call sys command
+  character(len=512) :: sys_cmd !< character to call sys command
   
   real(double_precision), dimension(:,:,:), allocatable :: abundances_out !< abundances over time for each species. (nb_outputs, nb_species)
   
@@ -195,7 +195,8 @@ subroutine get_outputs()
     sys_cmd= 'mv ml/ml.tmp '//trim(filename_output)
     call system(sys_cmd)
   ! below lines sums monolayers of each species on a particular grain and puts result in ml/sum_all_sp.ml file
-    sys_cmd="awk 'END { print "//'"'//trim(filename_output(4:10))//'"'//" ,s}{s+=$2}' "//trim(filename_output)//'>> ml/sum_all_sp.ml'
+    sys_cmd="awk 'END { print "//'"'//trim(filename_output(4:10))&
+    //'"'//" ,s}{s+=$2}' "//trim(filename_output)//'>> ml/sum_all_sp.ml'
     call system(sys_cmd)
     close(100+i)
   enddo 
