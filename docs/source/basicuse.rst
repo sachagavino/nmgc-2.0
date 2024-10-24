@@ -24,7 +24,7 @@ For instance, if you type::
 
     nmgc run
 
-This will execute the main chemical scheme using your input files.
+This will execute the main chemical scheme using the input files located in the current directory.
 
 The four actions
 =================
