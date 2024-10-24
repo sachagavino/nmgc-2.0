@@ -43,7 +43,7 @@ The ``outputs`` action mainly generates three new folders called ``ab/``, ``ml/`
 
 rates
 ---------------------
-This action generates two files. 
+This action generates two files: 
 
 * ``rates.out``: contains the flux of all reactions of the network at each time. More precisely, the flux corresponds to the rate coefficients multipled by the densities of the reactants.
 
