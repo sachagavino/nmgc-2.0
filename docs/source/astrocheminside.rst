@@ -36,4 +36,4 @@ The three-phase model
 The multi-grain mode
 =================
 
-Read for more details.
+Read ... for more details.

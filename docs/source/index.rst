@@ -12,4 +12,5 @@ Contents
    install
    basicuse
    inputoutput
+   astrocheminside
    particularities
