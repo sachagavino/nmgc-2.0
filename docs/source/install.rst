@@ -52,7 +52,7 @@ First, if you want to compile with something else than ``gfortran``, you will ha
 
     FF = gfortran
 
-so you can switch to whatever Fortran-90 compiler you want to use.
+so you can switch to whichever Fortran-90 compiler you want to use.
 
 Now, still in the ``src/`` folder, you want to compile the software by typing:: 
 

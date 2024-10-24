@@ -5,7 +5,7 @@ How to use the code
 Quickstart
 =================
 
-We saw that typing ``nmgc`` in your terminal displays the software banner, with a bunch of suggested actions. These actions are the core of Nautilus and will allow you to use it. 
+We saw that typing ``nmgc`` in your terminal displays the software banner, with a bunch of suggested actions. These actions are the core of Nautilus and are necessary to use it. 
 A detailed description of these options is provided below.
 
 
@@ -25,7 +25,7 @@ For instance, if you type::
 
 This will execute the main chemical scheme using your input files.
 
-The four actions of the code
+The four actions
 =================
 
 run
@@ -41,5 +41,5 @@ major_reactions
 ---------------------
 
 
-The four modes of the code
+The four modes
 =================

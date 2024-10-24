@@ -51,6 +51,8 @@ latex_elements = {
     'sphinxsetup': 'VerbatimColor={rgb}{0.95,0.95,0.95}',
 }
 
+primary_color = '#000000'
+
 
 # -- Options for HTML output
 
