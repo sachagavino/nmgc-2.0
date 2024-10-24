@@ -37,17 +37,18 @@ the time output. These files stores the outcome of your simulation i.e. the chem
 
 outputs
 ---------------------
-These output files mentioned above are not readable by default. The purpose of the action ``outputs`` is to convert the binary files into ASCII, easy to read, output files.
-It means that you want to run the action ``outputs`` right after the ``run`` action ended (assuming the simulations went well). 
-The ``outputs`` action mainly generates three new folders called ``ab/``, ``ml/``, and ``struct/``  
+These output files mentioned above are not readable by default. There comes the action ``outputs``: the purpose of this action is to convert these binary files into ASCII, easy to read, output files.
+It means that you want to run the action ``outputs`` right after the action ``run`` ended (assuming the simulations went well). 
+The ``outputs`` action mainly generates three new folders called ``ab/``, ``ml/``, and ``struct/``.  
 
 rates
 ---------------------
 This action generates two files. 
 
-* ``rates.out``: This 
+* ``rates.out``: This file contains the flux of all reactions of the network at each time. More precisely, the flux corresponds to the rate coefficients multipled by
+the densities of the reactants.
 
-* ``rate_coefficients``:
+* ``rate_coefficients``: This file contains the rate coefficients at each time.
 
 
 major_reactions
