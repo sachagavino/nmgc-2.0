@@ -10,7 +10,7 @@ A detailed description of these options is provided below.
 
 
 The first thing you want to do is to go to the working directory in which you stored your NMGC input files.
-If you don't know what these input are, they are described in details in Section :ref:`chap-input-files`. 
+If you don't know what these inputs are, they are described in details in Section :ref:`chap-input-files`. 
 You might want to read that section from now on if you don't know what input files to use for your simulations.
 
 Once in your working directory, you want to type ``nmgc``, followed by one of these four actions:
