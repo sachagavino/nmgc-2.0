@@ -5,7 +5,7 @@ FF = gfortran
 
 FFLAGS   = $(BCHECK)
 
-MISMATCH = -fallow-argument-mismatch # In order to have type mismatches errors coming \
+MISMATCH = -fallow-argument-mismatch -Wno-argument-mismatch# In order to have type mismatches errors coming \
 from the old ODEPACK Fortran 77 sources still be compiled.
 #-Wall
 
