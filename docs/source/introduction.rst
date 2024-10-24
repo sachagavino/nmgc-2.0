@@ -14,7 +14,7 @@ Note that in the following text, the name Nautilus and NMGC are sometimes used i
 
 Copyright
 =========
-NMGC is derived from the Nautilus code developed in the Bordeaux astrochemistry group. Nautilus is adapted from the original gas-grain model of Hasegawa & Herbst (1993) and has been developed in Ohio
+NMGC is derived from the Nautilus code developed in the Bordeaux astrochemistry group and is a property of @CNRS. Nautilus is adapted from the original gas-grain model of Hasegawa & Herbst (1993) and has been developed in Ohio
 State University (OSU model) later on. It has been continuously developed since then. 
 It uses the LSODES (Livermore Solver for Ordinary Differential Equations with general Sparse Jacobian matrix) solver (Hindmarsh 1983).
 A detailed description is given by Semenov et al. (2010). Major notable changes have been done over the last few years. The three-phase model was included in Nautilus (and NMGC)

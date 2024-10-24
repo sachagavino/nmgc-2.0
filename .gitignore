@@ -24,6 +24,7 @@ nmgc
 *.py_*
 *.pro_*
 *.zip
+*._
 #*
 .#*
 test*
