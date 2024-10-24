@@ -5,8 +5,9 @@ The input and output files of NMGC
 
 The input files are the same as for the official version of Nautilus, except for a few differences. Whenever differences exist between the two version, they are mentioned and described below in each section.   
 
-NMGC at minimum six inputs to be able to run. They are described in the following sections whose names are followed by ``(required)``. There are three additional optional input files
-that can be added. Wether or not you use these files will depend on your needs, which will be discussed in the following sections whose names are followed by ``(optional)``.
+NMGC needs at minimum six input files to be able to run. If one of these six files are missing, the code will automatically stop. They are described below and their name is followed by ``(required)``. 
+There are three additional optional input files that can be added. 
+Wether or not you use one or severals of these optional files will depend on your needs.
 
 
 
@@ -63,10 +64,25 @@ INPUT (optional): 1D_static.in
 ==================
 
 .. _sec-ab-output:
-OUTPUT: abundances.000.out
+OUTPUT: abundances.00000i.out
 ==================
 
-.. _sec-ab-output:
-OUTPUT: rates.000.out
+.. _sec-rates-output:
+OUTPUT: rates.00000i.out
+==================
+
+OUTPUT: col_dens.00000i.out
+==================
+
+OUTPUT: species.out
+==================
+
+OUTPUT: elemental_abundances.out
+==================
+
+OUTPUT: info.out
+==================
+
+OUTPUT: ab/, ml/, and struct/
 ==================
 
