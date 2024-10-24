@@ -69,12 +69,6 @@ If is does tell you that the ``bin/`` directory is not in your path, you should 
 
 Note that ``<YOUR HOME>`` is what you obtain when you type ``echo $HOME`` in your shell. 
 
-Alternatively, you can type::
-
-    which nmgc
-
-
-
 Don't forget to type ``source $HOME/.zshrc`` and ``rehash`` after that, so the new path is recognized by your shell (or alternatively opening a new terminal will do it).
 
 Depending on your OS or needs, you might want to use another configuration
