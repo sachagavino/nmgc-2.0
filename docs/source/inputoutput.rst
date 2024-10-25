@@ -63,6 +63,10 @@ INPUT: 1D_grain_sizes.in (optional)
 INPUT: 1D_static.in  (optional)
 ==================
 
+.. _sec-evolv-input:
+INPUT: structure_evolution.dat  (optional)
+==================
+
 
 
 -------------------------------------
