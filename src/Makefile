@@ -6,7 +6,7 @@ FF = gfortran
 FFLAGS   = $(BCHECK)
 
 MISMATCH = -fallow-argument-mismatch -Wno-argument-mismatch# In order to have type mismatches errors coming \
-from the old ODEPACK Fortran 77 sources still be compiled.
+from the old ODEPACK Fortran 77 sources still be compiled. The -Wno-argument-mismatch flag is added for older versions of gfortran.
 #-Wall
 
 
