@@ -50,7 +50,7 @@ INPUT: parameters.in (required)
 The file ``parameters.in`` is the main parameter file for your chemistry model. It is composed of switches, gas-phase, and gain parameters. This is also where you define the integration time, the number of time outputs,
 the modes (number of grains and dimension), the chemical model (2 vs. 3-phase model). Here is below the exhaustive list of all parameters that can be set by order of appearance in the file. Every line starting with ``!`` are commented and not taken into account.
 
-* `is_3_phase`
+* ``is_3_phase``:
 
     This switch sets the chemistry model. If set to ``1``, then the simulation will use the three-phase model (as described in Ruaud et al. (2016)). The three-phase model allow for the gas, the grain surface, and the grain mantle
     to be chemically active. Chemical species can 'swap' from the mantle to the surface, and vice versa. The chemical species in the mantle cannot react with the gas-phase directly. If it is set to ``0``, then the simulation
@@ -58,6 +58,13 @@ the modes (number of grains and dimension), the chemical model (2 vs. 3-phase mo
 
 * ``preliminary test``: 
 
+* ``is_structure_evolution``:
+
+* ``grain_temperature_type``: 
+
+* ``photo_disk``:
+
+* ``is_grain_reactions``:  
 
 
 
