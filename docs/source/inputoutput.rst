@@ -129,6 +129,37 @@ the modes (number of grains and dimension), the chemical model (2 vs. 3-phase mo
 
 * ``diffusion_barrier_thickness``:
 
+* ``surface_site_density``:
+
+* ``diff_binding_ratio_surf``:
+
+* ``diff_binding_ratio_mant``:
+
+* ``chemical_barrier_thickness``:
+
+* ``cr_peak_grain_temp``:
+
+* ``cr_peak_duration``:
+
+* ``Fe_ionisation_rate``:
+
+* ``vib_to_dissip_freq_ratio``:
+
+* ``ED_H2``:
+
+-------------------------------------
+
+* ``start_time``:
+
+* ``stop_time``:
+
+* ``nb_outputs``:
+
+* ``output_type``:
+
+* ``relative_tolerance``:
+
+* ``minimum_initial_abundance``:
 
 
 
