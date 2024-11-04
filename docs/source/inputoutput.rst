@@ -66,7 +66,44 @@ the modes (number of grains and dimension), the chemical model (2 vs. 3-phase mo
 
 * ``is_grain_reactions``:  
 
+* ``is_h2_adhoc_form``:  
 
+* ``is_h2_formation_rate``:  
+
+* ``height_h2formation``:  
+
+* ``is_absorption_h2``: 
+
+* ``is_absorption_co``:  
+
+* ``is_absorption_n2``:  
+
+* ``is_photodesorb``:  
+
+* ``is_crid``:  
+
+* ``is_er_cir``:  
+
+* ``grain_tunneling_diffusion``:  
+
+* ``modify_rate_flag``:  
+
+* ``conservation_type``:  
+
+* ``nb_active_lay``: 
+
+
+-------------------------------------
+
+* ``structure_type``: 
+
+* ``spatial_resolution``: 
+
+* ``multi_grain``: 
+
+-------------------------------------
+
+* ``initial_gas_density``: 
 
 
 .. _sec-surf-input:
