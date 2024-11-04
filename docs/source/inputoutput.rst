@@ -105,6 +105,34 @@ the modes (number of grains and dimension), the chemical model (2 vs. 3-phase mo
 
 * ``initial_gas_density``: 
 
+* ``initial_gas_temperature``: 
+
+* ``initial_visual_extinction``: 
+
+* ``cr_ionisation_rate``: 
+
+* ``x_ionisation_rate``: 
+
+* ``initial_dust_temperature``:
+
+* ``initial_dtg_mass_ratio``:
+
+* ``sticking_coeff_neutral``:
+
+* ``sticking_coeff_positive``:
+
+* ``sticking_coeff_negative``:
+
+* ``grain_density``:
+
+* ``grain_radius``:
+
+* ``diffusion_barrier_thickness``:
+
+
+
+
+
 
 .. _sec-surf-input:
 INPUT: surface_parameters.in (required)
