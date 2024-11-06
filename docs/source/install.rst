@@ -42,7 +42,7 @@ The following softwares are required:
 #. ``Fortran-90 compiler``
 
     You need a Fortran-90 compiler. The software has been tested with the ``gfortran`` compiler only, but there is no reason it should not be working with the others. Please, make sure you have the latest version
-    of your compiler (gfortran version > 10.3.0 at least). 
+    of your compiler (gfortran version > 10.3.0). 
 
 
 Compiling the code
