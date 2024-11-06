@@ -58,7 +58,7 @@ the modes (number of grains and dimension), the chemical model (2 vs. 3-phase mo
 
 * ``preliminary test``: 
 
-    Set this to 1 if you want to perform an preliminary test before your simulation. In case you are running many simulations we recommand that you set this switch to 0.
+    Set this parameter to 1 if you want to perform a preliminary test before your simulation starts. In case you are running many simulations we recommand that you set this switch to 0.
 
 * ``is_structure_evolution``:
 
