@@ -19,10 +19,6 @@ INPUT: abundances.in (required)
 INPUT: activation_energies.in (required)
 ==================
 
-.. _sec-elm-input:
-INPUT: element.in (required)
-==================
-
 .. _sec-network-input:
 INPUT: chemical network (required)
 ==================
@@ -43,12 +39,17 @@ grain_reactions.in
 grain_species.in
 ---------------------
 
+.. _sec-elm-input:
+INPUT: element.in (required)
+==================
+
+
 .. _sec-param-input:
 INPUT: parameters.in (required)
 ==================
 
 The file ``parameters.in`` is the main parameter file for your chemistry model. It is composed of switches, gas-phase, and gain parameters. This is also where you define the integration time, the number of time outputs,
-the modes (number of grains and dimension), the chemical model (2 vs. 3-phase model). Here is below the exhaustive list of all parameters that can be set by order of appearance in the file. Every line starting with ``!`` are commented and not taken into account.
+the modes (number of grains and dimension), the chemical model (2 vs. 3-phase model). Here is below the exhaustive list of all parameters that can be set by order of appearance in the file. Every line starting with ``!`` are commented and not read by the code.
 
 * ``is_3_phase``:
 
