@@ -63,6 +63,9 @@ the modes (number of grains and dimension), the chemical model (2 vs. 3-phase mo
 
 * ``is_structure_evolution``:
 
+    If this parameter is set to ``1`` the physical structure evolves with time. In the current version of NMGC, the Av, gas density, gas and dust temperatures can evolve with time. The
+    parameters are read in the file structure_evolution.dat. If this file is absent and this flag is set to 1 the code will not run. 
+
 * ``grain_temperature_type``: 
 
 * ``photo_disk``:
