@@ -74,3 +74,4 @@ The grain size mode can be set in ``parameters.in``, using the flag ``multi-grai
 
 Of course, **the grain size modes and dimensional modes can be used together** (the two grain size modes can be run either in ``0D`` or ``1D``), making a total of four possible modes. 
 Typically, when the simulation is set to ``multi-grain`` mode, the grain parameters (sizes, densities, temperatures), are read either in the input file called ``0D_grain_sizes.in`` in ``0D`` mode, or in the input file called ``1D_grain_sizes.in`` in ``1D`` mode.
+On the other hand, when the simulation is set to ``single-grain`` mode, the grain parameters are read in the file ``1D_static.dat`` in ``1D`` or in the file ``parameters.in`` in ``0D``.
