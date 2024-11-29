@@ -72,6 +72,8 @@ the modes (number of grains and dimension), the chemical model (2 vs. 3-phase mo
 
 * ``is_grain_reactions``:  
 
+    If this parameter is set to ``0`` then there is no accretion onto the grain surface nor there is grain surface reactions during the simulation.
+
 * ``is_h2_adhoc_form``:  
 
 * ``is_h2_formation_rate``:  
