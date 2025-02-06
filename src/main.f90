@@ -554,6 +554,7 @@ PROGRAM nmgc
       endif
       
       call write_banner()
+      call init_gasgrain()
 
       write(*,'(a,i0)') 'Spatial resolution: ', spatial_resolution
       write(*,'(a,i0)') 'Number of time outputs: ', nb_outputs
@@ -578,6 +579,7 @@ PROGRAM nmgc
       endif
 
       call write_banner()
+      call init_gasgrain()
 
       write(*,'(a, i0)') 'Spatial resolution: ', spatial_resolution
       write(*,'(a, i0)') 'Number of time outputs: ', nb_outputs
@@ -603,6 +605,7 @@ PROGRAM nmgc
         endif
 
         call write_banner()
+        call init_gasgrain()
 
         write(*,'(a, i0)') 'Spatial resolution: ', spatial_resolution
         write(*,'(a, i0)') 'Number of time outputs: ', nb_outputs

@@ -45,7 +45,6 @@ subroutine get_outputs()
 
   allocate(abundances_out(nb_outputs, nb_species, spatial_resolution))
 
-
   ! The next write will be written in the same line
   write(*,'(a)', advance='no') 'Reading unformatted outputs...'
   ! We read output files
@@ -66,24 +65,24 @@ subroutine get_outputs()
   ! Test if the folder exists
   inquire(file='ab', exist=isDefined)
 
-  ! We create the folder 'ab' if he doesn't exists.
+  ! We create the folder 'ab' if it doesn't exists.
   if (.not.isDefined) then
     call system("mkdir ab")
   end if
 
   ! Remove all existing *.ab if needed. Will return a warning in standard output if nothing exists
-  call system("rm ab/*.ab")
+  !call system("rm ab/*.ab")
 
   ! Test if the folder for mono layer data exists 
   inquire(file='ml', exist=isDefined)
 
-  ! We create the folder 'ml' if he doesn't exists.
+  ! We create the folder 'ml' if it doesn't exists.
   if (.not.isDefined) then
     call system("mkdir ml")
   end if
 
   ! Remove all existing *.ml if needed. Will return a warning in standard output if nothing exists
-  call system("rm ml/*.ml")
+  !call system("rm ml/*.ml")
 
 ! end subroutine init_outputs
 

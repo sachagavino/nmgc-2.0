@@ -652,7 +652,7 @@ name_species = ''
   enddo  
   
 !    write(*,*)"---------------------------------------------------------------"
-!    write(*,*)t_nb_species_for_grain, t_nb_surface_reactions
+!    write(*,*) nb_species_for_gas, t_nb_grains_in_gas
 nb_species_for_gas = nb_species_for_gas + t_nb_grains_in_gas * (nb_grains-1)
 nb_gas_phase_reactions = nb_gas_phase_reactions + t_nb_gas_grain_reactions_in_gas * (nb_grains-1)
 
