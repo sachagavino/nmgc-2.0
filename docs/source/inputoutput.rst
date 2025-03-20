@@ -94,7 +94,11 @@ the modes (number of grains and dimension), the chemical model (2 vs. 3-phase mo
 
 * ``is_photodesorb``:  
 
+    Switch to turn on the photodesorption of ices (default is 1e-4).
+
 * ``is_crid``:  
+
+    Switch to turn on the Cosmic Rays Induced Diffusion (crid) mechanism.
 
 * ``is_er_cir``:  
 
