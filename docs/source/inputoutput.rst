@@ -82,9 +82,15 @@ the modes (number of grains and dimension), the chemical model (2 vs. 3-phase mo
 
 * ``is_absorption_h2``: 
 
+    Add H2 self-shielding using Lee & Herbst (1996) (set to 1 to activate).
+
 * ``is_absorption_co``:  
 
+    Add CO self-shielding. Set to 1 to use Lee & Herbst (1996), or 2 to use Visser et al. (2009). 0 to deactivate CO self-shielding.
+
 * ``is_absorption_n2``:  
+
+    Add N2 self-shielding. Set to 1 to use Li et al. (2013).
 
 * ``is_photodesorb``:  
 
