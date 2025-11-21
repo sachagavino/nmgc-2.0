@@ -125,8 +125,33 @@ opkdmain.o: 				$(SRCOPKDMAIN)  Makefile
 	                		$(FF) -c -w $(FFLAGS) $(MISMATCH) $(SRCOPKDMAIN) -o $@
 
 
-install:	    nmgc
-				./install.pl
+# Default installation prefix
+PREFIX ?= $(HOME)
+BINDIR = $(PREFIX)/bin
+
+# Allow alternative specification: make install compiler=flang
+ifdef compiler
+    FC = $(compiler)
+endif
+
+install: nmgc
+	@echo "Installing nmgc into $(BINDIR)"
+	mkdir -p $(BINDIR)
+	install -m 755 nmgc $(BINDIR)/nmgc
+
+	@echo ""
+	@echo "Installation complete."
+
+	@# Add to PATH if missing
+	if ! echo $${PATH} | grep -q "$(BINDIR)"; then \
+	   echo ""; \
+	   echo "Adding $(BINDIR) to PATH in ~/.bashrc and ~/.zshrc"; \
+	   echo "export PATH=$(BINDIR):\$$PATH" >> $(HOME)/.bashrc; \
+	   echo "export PATH=$(BINDIR):\$$PATH" >> $(HOME)/.zshrc; \
+	   echo ""; \
+	   echo "Please open a new terminal or run:"; \
+	   echo "    source ~/.bashrc  # or ~/.zshrc"; \
+	fi
 
 clean:
 	@rm -f	*.o *.mod

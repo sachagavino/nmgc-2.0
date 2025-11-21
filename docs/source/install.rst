@@ -34,41 +34,26 @@ The following softwares are required:
     The GNU Make tool is required to compile the software. In principle, it should already be pre-installed on your machine.
     In case it is not, you can type ``sudo apt-get install make`` if you are working on Linux, or ``brew install make`` regardless of your OS.
 
-#. ``perl``
-
-    Perl is a Unix-friendly scripting language that unable text processing tasks. It is required to copy the executable in the $HOME/bin directory.
-    Note that this requirements will be removed in the next update of NMGC.
 
 #. ``Fortran-90 compiler``
 
-    You need a Fortran-90 compiler. The software has been tested with the ``gfortran`` compiler only, but there is no reason it should not be working with the others. Please, make sure you have the latest version
+    You need a Fortran-90 compiler. The default installation compiler is ``gfortran``. Please, make sure you have the latest version
     of your compiler (gfortran version > 10.3.0). 
 
 
 Compiling the code
 =================
 
-To compile the code, enter the ``src/`` folder. 
-First, if you want to compile with something else than ``gfortran``, you will have to edit the following line in ``Makefile``::
-
-    FF = gfortran
-
-and switch ``gfortran`` to whichever Fortran-90 compiler you want to use.
-
-Now, still in the ``src/`` folder, you can compile the software by typing:: 
+To compile the code, enter the ``src/`` folder. You can compile the software by typing:: 
 
     make install
 
+If you want to compile with something else than ``gfortran``, for example ``ifx``, you can type::
+
+    make FC=ifx install
+
+
 You should now see the executable called ``nmgc`` appear in ``src/``. 
-
-Additionnally, the perl script checks if the ``$HOME/bin`` directory exists on your machine. If not, it will ask you to create one (you should say yes). 
-Then, it will add a link ``nmgc`` in ``$HOME/bin``. This will allow you to execute the software everywhere you want to. For this to be possible, the 
-``$HOME/bin`` directory must be in the path of your current shell. The script should warn you during the installation if it is not the case.
-If is does tell you that the ``bin/`` directory is not in your path, you should add the following line in your ``$HOME/.zshrc``::
-
-    export PATH=/<YOUR HOME>/bin:$PATH
-
-Note that ``<YOUR HOME>`` is what you obtain when you type ``echo $HOME`` in your shell. 
 
 Don't forget to type ``source $HOME/.zshrc`` and ``rehash`` after that, so the new path is recognized by your shell (or alternatively opening a new terminal will do it).
 
