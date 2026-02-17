@@ -102,6 +102,8 @@ the modes (number of grains and dimension), the chemical model (2 vs. 3-phase mo
 
 * ``is_er_cir``:  
 
+    Switch to turn on Eley-Rideal and Complex Induced Reaction mechanisms (default=0: desactivated).
+
 * ``grain_tunneling_diffusion``:  
 
 * ``modify_rate_flag``:  
