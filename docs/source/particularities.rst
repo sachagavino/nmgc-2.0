@@ -11,6 +11,8 @@ What dust temperature to use
 Best practices for disks
 =================
 
+#. Avoid convergence issues
+
 When working with disk models, it is very common that the density drops to very low values at high altitude above the midplane, often 
 down to values way lower than what is found in the ISM. This is an inherent result of many hydrodynamics simulations' output.
 When astroMUGS convert such models into NMGS inputs, the extremely low values of densities are conserved. This often results in many conversion issues in Nautilus.
