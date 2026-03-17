@@ -154,6 +154,7 @@ integer :: max_nonzeros, NUMBERJAC
 max_nonzeros = 0
 
 dummyy(1:nb_species) = 1.d-5
+x_i = 1 ! Ensure valid spatial index for set_dependant_rates
 
 call set_constant_rates()
 call set_dependant_rates(dummyy)

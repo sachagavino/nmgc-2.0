@@ -701,15 +701,20 @@ PROGRAM nmgc
   
       do i=1,nb_species
         satol(i) = max(a_tol, 1.d-16 * temp_abundances(i))
+        ! Added on Dec 2019 to prevent from NaN issues.
+        if (temp_abundances(i).le.1.d-60) then
+            temp_abundances(i) = 1.d-60
+        end if
       enddo
-  
-      ! Added on Dec 2019 to prevent from NaN issues.
-      if (temp_abundances(i).le.1.d-60) then
-          temp_abundances(i) = 1.d-60
-      end if
   
       ! Feed IWORK with IA and JA
   
+      ! Debug: check for NaN/zero in initial abundances
+      do i=1,nb_species
+        if (temp_abundances(i) /= temp_abundances(i)) then
+          write(*,*) 'NaN in temp_abundances at species', i, species_name(i)
+        endif
+      enddo
       call set_work_arrays(Y=temp_abundances)
       
   

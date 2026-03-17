@@ -611,6 +611,17 @@ do i=1,nb_species
   if (species_name(i).eq.YCH)   INDCH=i
   if (species_name(i).eq.YCH3)   INDCH3=i
   if (species_name(i).eq.YH2CO)   INDH2CO=i
+  if (species_name(i).eq.YCO2)   INDCO2=i
+  if (species_name(i).eq.YN2O)   INDN2O=i
+  if (species_name(i).eq.YCH4)   INDCH4=i
+  if (species_name(i).eq.YOH)    INDOH=i
+  if (species_name(i).eq.YHCO)   INDHCO=i
+  if (species_name(i).eq.YCN)    INDCN=i
+  if (species_name(i).eq.YHCN)   INDHCN=i
+  if (species_name(i).eq.YHNC)   INDHNC=i
+  if (species_name(i).eq.YNH)    INDNH=i
+  if (species_name(i).eq.YNH2)   INDNH2=i
+  if (species_name(i).eq.YNH3)   INDNH3=i
 
   do j=1,nb_grains
     if (species_name(i).eq.YGRAIN(j)) INDGRAIN(j)=i
