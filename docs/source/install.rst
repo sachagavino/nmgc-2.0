@@ -53,7 +53,7 @@ If you want to compile with something else than ``gfortran``, for example ``ifx`
     make FC=ifx install
 
 A recommandation to make debugging easy (in particular segmentation faults, which are common with gas-grain codes), is to compile with bounds checking and backtrace.
-Instead of simply ``make install``, write this in the command line:
+Instead of simply ``make install``, write this in the command line::
 
     make BCHECK="-fbounds-check -g -fbacktrace" 2>&1 | tail -5
     make install
