@@ -1120,7 +1120,11 @@ abCO(1:nb_grains) = 0.d0
   EVAPORATION_RATES_TEMPO_H2 = 0.D0
 
   do j=1,nb_reactions
-    cond(j) = PI*grain_radii(GRAIN_RANK(J))*grain_radii(GRAIN_RANK(J))*SQRT(8.0d0*K_B/PI/AMU)
+    if (GRAIN_RANK(J) > 0) then
+      cond(j) = PI*grain_radii(GRAIN_RANK(J))*grain_radii(GRAIN_RANK(J))*SQRT(8.0d0*K_B/PI/AMU)
+    else
+      cond(j) = 0.d0
+    endif
   enddo
 
 ! modified by Wasim...

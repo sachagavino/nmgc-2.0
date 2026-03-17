@@ -54,7 +54,7 @@ If you want to compile with something else than ``gfortran``, for example ``ifx`
 
 A recommandation to facilitate debugging (in particular segmentation faults, which are common with gas-grain codes), is to compile with bounds checking and backtrace, like so:
 
-    make BCHECK="-fbounds-check -g -fbacktrace"
+    make BCHECK="-fbounds-check -g -fbacktrace" 2>&1 | tail -5
     make install
 
 Instead of bare segfault, the compiler will tell exactly which array, index of source line raised the fault.
