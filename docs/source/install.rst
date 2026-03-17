@@ -52,6 +52,13 @@ If you want to compile with something else than ``gfortran``, for example ``ifx`
 
     make FC=ifx install
 
+A recommandation to facilitate debugging (in particular segmentation faults, which are common with gas-grain codes), is to compile with bounds checking and backtrace, like so:
+
+    make BCHECK="-fbounds-check -g -fbacktrace"
+    make install
+
+Instead of bare segfault, the compiler will tell exactly which array, index of source line raised the fault.
+
 
 You should now see the executable called ``nmgc`` appear in ``src/``. 
 
