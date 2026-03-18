@@ -15,3 +15,4 @@ Contents
    modelstructure
    astrocheminside
    particularities
+   bestpractices
