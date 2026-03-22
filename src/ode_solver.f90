@@ -2393,7 +2393,7 @@ IWORK(6) = 10000
 IWORK(7) = 2
 
 if (.not.(first_step_done)) then
-  IWORK(6)=2000
+  IWORK(6)=10000
 endif
 
 k=1
