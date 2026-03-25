@@ -76,6 +76,8 @@ the modes (number of grains and dimension), the chemical model (2 vs. 3-phase mo
 
 * ``is_h2_adhoc_form``:  
 
+    Ad hoc formation of H2 on grain surfaces (1=activated)
+
 * ``is_h2_formation_rate``:  
 
 * ``height_h2formation``:  
