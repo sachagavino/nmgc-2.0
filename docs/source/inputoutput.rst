@@ -108,7 +108,11 @@ the modes (number of grains and dimension), the chemical model (2 vs. 3-phase mo
 
 * ``grain_tunneling_diffusion``:  
 
+    0=thermal; For H,H2: 1=QM1; 2=QM2; 3=choose fastest; 4= QM2 for O ; 5= QM2 for all.
+
 * ``modify_rate_flag``:  
+
+    1=modify H; 2=modify H,H2, 3=modify all, -1=H+H only.
 
 * ``conservation_type``:  
 
