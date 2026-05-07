@@ -489,7 +489,7 @@ PROGRAM nmgc
       !91  FORMAT(2x,a12,x,i3,4x,a14,ES10.2,x,a4,4x,a19,F8.2,x,a4) 
       91  FORMAT(2x,a19,x,ES10.3,4x,a14,ES10.2,x,a4,4x,a19,F8.2,x,a4) 
       92  FORMAT(2x,a29,x,F10.6,2x,a18,x,F10.6,2x,a18,x,F10.6)
-          call write_H2_CO_col_dens(index=output_idx)
+          !call write_H2_CO_col_dens(index=output_idx)
 
 
           if (spatial_resolution.eq.1) then

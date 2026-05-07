@@ -96,12 +96,13 @@ end subroutine write_elemental_abundances
 !> @date 2000
 !
 ! DESCRIPTION: 
-!> @brief Write all abundances for all species in an output file at each
-!! output time. The total number of output files related to abundances 
-!! will be equal to the number of timestep, not equally spaced in time.\n\n
-!! Output filename is of the form : abundances.000001.out
+!> @brief Write all abundances for all species in a single binary output file.
+!! All timesteps are appended sequentially to abundances.out. Each timestep
+!! consists of three unformatted records: (1) current_time, (2) physical
+!! quantities, (3) abundances array. The file is created on the first call
+!! (index=1) and appended on subsequent calls.
 !
-!%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+!%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 subroutine write_current_output(index)
 ! Writes 1D outputs
 use global_variables
@@ -111,13 +112,11 @@ implicit none
 ! Input
 integer, intent(in) :: index !<[in] The reference index of the current output
 
-! Locals
-character(len=80) :: filename_output
-
-write(filename_output, '(a,i0.6,a)') 'abundances.',index,'.out'
-
-
-open(UNIT=35, file=filename_output, form='unformatted')
+if (index == 1) then
+  open(UNIT=35, file='abundances.out', form='unformatted', status='replace')
+else
+  open(UNIT=35, file='abundances.out', form='unformatted', status='old', position='append')
+end if
 
 write(35) current_time
 write(35) gas_temperature(1:spatial_resolution), dust_temperature(1,1:spatial_resolution), &
@@ -136,11 +135,10 @@ end subroutine write_current_output
 !
 ! DESCRIPTION: 
 !> @brief Write rates of all chemical reactions for the current timestep.
-!! The total number of files will be equal to the total number of timesteps, the
-!! routine being called at the end of each timestep.\n\n
-!! Output filename is of the form : rates.000001.out
+!! All timesteps are appended sequentially to a single rates.out file.
+!! The file is created on the first call (index=1) and appended on subsequent calls.
 !
-!%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+!%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 subroutine write_current_rates(index)
 
 use global_variables
@@ -150,18 +148,17 @@ implicit none
 ! Input
 integer, intent(in) :: index !<[in] The reference index of the current output
 
-! Locals
-character(len=80) :: filename_output
+if (index == 1) then
+  open(45, file='rates.out', form='unformatted', status='replace')
+else
+  open(45, file='rates.out', form='unformatted', status='old', position='append')
+end if
 
-write(filename_output, '(a,i0.6,a)') 'rates.',index,'.out'
-
-open(45, file=filename_output, form='unformatted')
-
-write(45) reaction_rates_1D 
+write(45) reaction_rates_1D
 
 close(45)
 
-return 
+return
 end subroutine write_current_rates
 
 !%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
