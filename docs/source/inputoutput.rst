@@ -397,7 +397,7 @@ Each data row contains **10 space-separated columns**, in the following order:
 
 .. note::
 
-   In **multi-grain mode** (``multi_grain = 1``), columns 7 and 9 (GTODN and grain radius) are replaced by the corresponding per-bin values from ``1D_grain_sizes.in``. Columns 1–6, 8, and 10 are always read from ``1D_static.dat`` regardless of the grain mode.
+   In **multi-grain mode** (``multi_grain = 1``), columns 6, 7 and 9 (dust temperature , GTODN, and grain radius) are replaced by the corresponding per-bin values from ``1D_grain_sizes.in``. Columns 1–5, 8, and 10 are always read from ``1D_static.dat`` regardless of the grain mode.
 
 .. warning::
 
