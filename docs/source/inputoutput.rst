@@ -419,7 +419,7 @@ The file ``abundances.out`` is the **main output file** of NMGC. It is a single 
 
 .. note::
 
-   This differs from older versions of NAUTILUS, which wrote one separate binary file per timestep (named ``abundances.000001.out``, ``abundances.000002.out``, etc.). In NMGC, all timesteps are collected into a single ``abundances.out`` file.
+   This differs from other versions of NAUTILUS, which write one separate binary file per timestep (named ``abundances.000001.out``, ``abundances.000002.out``, etc.). In NMGC, all timesteps are collected into a single ``abundances.out`` file. This change is meant to facililate data handling. 
 
 Each timestep block consists of three sequential unformatted Fortran records, written in the following order:
 
@@ -435,7 +435,7 @@ Each timestep block consists of three sequential unformatted Fortran records, wr
 
 3. **Abundance record** — fractional abundances (relative to total H) of all chemical species at all spatial points: 2D array of shape ``(nb_species, spatial_resolution)``.
 
-To read this file, one must loop over timestep blocks until the end of the file is reached. Python scripts to read and plot the contents of this file are provided in the ``scripts/`` directory of the repository (e.g., ``nautilus-plot-abundances.py``, ``nautilus-trace-species.py``).
+To read this file, one must loop over timestep blocks until the end of the file is reached. The Python package astroMUGS is designed to easily open, read, and plot the content.  
 
 .. _sec-rates-output:
 OUTPUT: rates.00000i.out
