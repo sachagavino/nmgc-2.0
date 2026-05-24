@@ -32,13 +32,12 @@ The four actions
 run
 ---------------------
 This action launches the main chemical scheme. The code reads the input files you provided (chemical network, physical model, initial abundances, etc.), and proceeds to
-compute the chemical evolution. At the end of the simulation, binary files are generated, in particular the files abundances.00000i.out and rates.00000i.out, with ``i`` corresponding to
-the time output, meaning that there should be as many of these files as the number of outputs defined in ``parameters.in``. These files store the results of your simulation i.e. the chemical abundances as a function of the integration time for each species and each spatial location.
+compute the chemical evolution. At the end of the simulation, binary files are generated, in particular the files abundances.out and rates.out. These files store the results of your simulation i.e. the chemical abundances as a function of the integration time for each species and each spatial location.
 
 outputs
 ---------------------
-These output files described above are not readable by default. There comes the action ``outputs``. The purpose of this action is to convert these binary files into easy-to-read files in ASCII format.
-It means that you want to run the action ``outputs`` right after the action ``run`` ended (assuming the simulations went well). 
+These output files described above are binaries. The purpose of this action is to convert these binary files into easy-to-read files in ASCII format.
+It means that you want to run the action ``outputs`` after the action ``run`` ended (assuming the simulations went well). 
 The ``outputs`` action mainly generates three new folders called ``ab/``, ``ml/``, and ``struct/``.  
 
 rates
@@ -64,11 +63,11 @@ Dimensions
 ---------------------
 NMGC uses two dimensional modes, called ``0D`` and ``1D``. In the ``0D`` mode, the physical model is only composed of one cell, with a single density, temperature, UV flux value, etc. This is a well-suited mode for homogeneous physical environements.
 The ``1D`` mode allows the user to build a more complex physical structure, composed of multiple cells, each of which with a given physical condition. This is usually the preferred mode for non-homogeneous models such as protoplanetary disks. In general. the users divide their model into a set of multiple ``1D`` simulations (usually referred to as 1D+1 simulations).
-The dimensional mode can be set using the parameter ``structure_type`` in ``parameters.in``. Note that the ``1D`` mode is divided into two modes called ``1D_no_diff`` and ``1D_diff``, which depends on whether or not diffusion exists between the neighboring cells. 
+The dimensional mode can be set using the parameter ``structure_type`` in ``parameters.in``. Note that the ``1D`` mode is divided into ``1D_no_diff`` and ``1D_diff``, which depends on whether or not diffusion exists between the neighboring cells. 
 
 Grain sizes
 ---------------------
-NMGC also comes with two grain size modes, called multi-grain and single-grain. In the single-grain mode, NMGC works exactly like the main version of Nautilus (apart from a bunch of differences that are described in :ref:`chap-input-files`). 
+NMGC also comes with two grain size modes, called multi-grain and single-grain. In the single-grain mode, NMGC works exactly like the main version of Nautilus (apart from a bunch of differences that are described in :ref:`chap-particularities`). 
 The multi-grain mode, on the other hand, is the main specificity of NMGC. If the user uses this mode, then NMGC considers a set of discretized grain populations, each with their own size, density and surface temperature.
 The grain size mode can be set in ``parameters.in``, using the flag ``multi-grain``. If ``multi-grain`` is set to ``0``, then the code works in single-grain mode. If ``multi-grain`` is set to ``1``, then the code works in multi-grain mode. 
 

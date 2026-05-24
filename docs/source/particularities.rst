@@ -1,3 +1,5 @@
+.. _chap-particularities:
+
 The particularities of the multi-grain mode
 ************
 

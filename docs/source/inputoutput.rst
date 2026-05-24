@@ -17,7 +17,7 @@ INPUTS
 ==================
 
 .. _sec-ab-input:
-INPUT: abundances.in (required)
+abundances.in (required)
 --------------------------------------------
 
 The file ``abundances.in`` sets the initial chemical composition of the gas and/or dust at the start of the simulation. All abundances are **fractional abundances relative to the total hydrogen nuclei density**, i.e., :math:`x_i = n_i / n_{\rm H}`.
@@ -53,7 +53,7 @@ The file can contain either atomic or molecular initial abundances, depending on
    The species names in ``abundances.in`` must match exactly the names used in the chemical network files (``gas_species.in``, ``grain_species.in``). Names are case-sensitive.
 
 .. _sec-act-input:
-INPUT: activation_energies.in (required)
+activation_energies.in (required)
 --------------------------------------------
 
 The file ``activation_energies.in`` provides the chemical reaction barrier energies (activation energies) for grain-surface and grain-mantle reactions. It is read at startup and its entries are matched against the reactions in the chemical network. Any grain reaction that is **not** listed here is assigned an activation energy of zero (i.e., no chemical barrier).
@@ -84,12 +84,12 @@ Lines beginning with ``!`` are treated as comments and skipped. Inline comments 
    The activation energies listed here are the **chemical reaction barriers**, distinct from the **diffusion barriers** of surface species (which are derived from the binding energies in ``grain_species.in`` via ``diff_binding_ratio_surf`` and ``diff_binding_ratio_mant`` in ``parameters.in``). Both barriers enter the rate calculation, but they are stored separately.
 
 .. _sec-network-input:
-INPUT: chemical network (required)
+chemical network (required)
 --------------------------------------------
 
 The chemical network is defined by four files that together describe all the chemical species and reactions included in the simulation: two for the gas-phase chemistry (``gas_species.in`` and ``gas_reactions.in``) and two for the grain-phase chemistry (``grain_species.in`` and ``grain_reactions.in``). All four files must be present for the code to run.
 
-The network format used in NMGC is based on the `KIDA (Kinetic Database for Astrochemistry) <https://kida.astrochem-tools.org/>`_ format, which is a community standard for astrochemical reaction networks. The network distributed with NMGC is derived from the kida.uva.2014 gas-phase network, extended with a grain-surface network. Users may download updated or alternative gas-phase networks directly from the KIDA database and adapt them to the NMGC format.
+The network format distributed with the NMGC repository is based on the `KIDA (Kinetic Database for Astrochemistry) <https://kida.astrochem-tools.org/>`_ format, which is a community standard for astrochemical reaction networks. The network distributed with NMGC is derived from the kida.uva.2014 gas-phase network, extended with a grain-surface network. Users may download updated or alternative gas-phase networks directly from the KIDA database and adapt them to the NMGC format.
 
 The species naming conventions used throughout the network are:
 
@@ -201,7 +201,7 @@ A few conventions specific to the grain network:
 * The ``NA`` string appears in the uncertainty column (in place of ``logn`` used in the gas network) as a placeholder when uncertainty information is unavailable.
 
 .. _sec-elm-input:
-INPUT: element.in (required)
+element.in (required)
 --------------------------------------------
 
 The file ``element.in`` lists all atomic elements present in the chemical network, together with their atomic mass in atomic mass units (AMU). The code uses these masses to compute the molecular masses of all species in the network.
@@ -221,7 +221,7 @@ The set of elements must be consistent with the chemical network: every element 
 
 
 .. _sec-param-input:
-INPUT: parameters.in (required)
+parameters.in (required)
 --------------------------------------------
 
 The file ``parameters.in`` is the main parameter file for your chemistry model. It gathers switches, gas-phase parameters, and grain parameters. This is also where you define the integration time, the number of output times,
@@ -501,7 +501,7 @@ These parameters control the properties of the dust grains and the surface chemi
 
 
 .. _sec-surf-input:
-INPUT: surface_parameters.in (required)
+surface_parameters.in (required)
 --------------------------------------------
 
 The file ``surface_parameters.in`` provides the surface chemistry parameters for all grain-surface species (``J``-prefix) in the network. It is the grain-phase counterpart of ``gas_species.in``. Each non-comment line defines one species and contains the energetic quantities that control its thermal desorption, surface diffusion, quantum tunneling, and enthalpy budget.
@@ -539,7 +539,7 @@ Lines beginning with ``!`` are treated as comments and skipped. Commented-out al
    In multi-grain mode (``multi_grain = 1``), each line is automatically replicated for all grain size bins. The species name for bin :math:`n` takes the form ``J`` + zero-padded bin index + remainder of the name (e.g., ``J01H``, ``J02H``, ...). It is therefore not necessary to list each grain bin explicitly.
 
 .. _sec-0d-input:
-INPUT: 0D_grain_sizes.in (optional)
+0D_grain_sizes.in (optional)
 --------------------------------------------
 
 The file ``0D_grain_sizes.in`` defines the grain size distribution for a **0D (single-point) simulation in multi-grain mode**. It is read when both ``multi_grain = 1`` and ``structure_type = 0D`` are set in ``parameters.in``. If this file is absent under those conditions, the code will exit with an error.
@@ -572,7 +572,7 @@ Lines beginning with ``!`` are treated as comments and skipped. Inline comments 
 
 
 .. _sec-1d-input:
-INPUT: 1D_grain_sizes.in (optional)
+1D_grain_sizes.in (optional)
 --------------------------------------------
 
 The file ``1D_grain_sizes.in`` defines the grain size distribution for a **1D simulation in multi-grain mode**. It is read when both ``multi_grain = 1`` and ``structure_type = 1D_no_diff`` or ``1D_diff`` are set in ``parameters.in``. It allows the grain properties (size, abundance, temperature) to vary spatially along the 1D grid.
@@ -607,7 +607,7 @@ Lines beginning with ``!`` are skipped. Inline comments (after a ``!`` on a data
    The same recommendation on the number of grain bins applies as for ``0D_grain_sizes.in``: keep it small (typically 2–10). In multi-grain mode, this file **overrides columns 6, 7, and 9** of ``1D_static.dat`` (dust temperature, GTODN, and grain radius respectively) at every spatial point. The single dust temperature in column 6 of ``1D_static.dat`` is not read when ``multi_grain = 1``; per-bin temperatures from this file are used instead.
 
 .. _sec-static-input:
-INPUT: 1D_static.dat  (optional)
+1D_static.dat  (optional)
 --------------------------------------------
 
 The file ``1D_static.dat`` provides the static (time-independent) physical structure for a 1D simulation. It is read when ``structure_type`` is set to ``1D_no_diff`` or ``1D_diff`` in ``parameters.in``. If ``structure_type = 0D``, this file is not read.
@@ -674,7 +674,7 @@ Each data row contains **10 space-separated columns**, in the following order:
    The number of data rows in ``1D_static.dat`` and in ``1D_grain_sizes.in`` must be identical when running in multi-grain 1D mode. The code will exit with an error if they differ.
 
 .. _sec-evolv-input:
-INPUT: structure_evolution.dat  (optional)
+structure_evolution.dat  (optional)
 --------------------------------------------
 
 The file ``structure_evolution.dat`` provides a time-dependent physical structure for the simulation. It is read when ``is_structure_evolution = 1`` is set in ``parameters.in``. **This file is currently only supported in 0D mode** (``structure_type = 0D``).
@@ -719,7 +719,7 @@ OUTPUTS
 ==================
 
 .. _sec-ab-output:
-OUTPUT: abundances.out
+abundances.out
 --------------------------------------------
 
 The file ``abundances.out`` is the **main output file** of NMGC. It is a single Fortran unformatted (binary) file that contains the chemical abundances of all species, at all spatial grid points, for every output timestep requested. All timesteps are appended sequentially into this one file over the course of the simulation.
@@ -745,27 +745,27 @@ Each timestep block consists of three sequential unformatted Fortran records, wr
 To read this file, one must loop over timestep blocks until the end of the file is reached. The Python package astroMUGS is designed to easily open, read, and plot the content.  
 
 .. _sec-rates-output:
-OUTPUT: rates.00000i.out
+rates.00000i.out
 --------------------------------------------
 
-OUTPUT: col_dens.00000i.out
+col_dens.00000i.out
 --------------------------------------------
 
-OUTPUT: species.out
+species.out
 --------------------------------------------
 
-OUTPUT: elemental_abundances.out
+elemental_abundances.out
 --------------------------------------------
 
-OUTPUT: info.out
+info.out
 --------------------------------------------
 
-OUTPUT: ab/, ml/, and struct/
+ab/, ml/, and struct/
 --------------------------------------------
 
-OUTPUT: rates.out
+rates.out
 --------------------------------------------
 
-OUTPUT: rate_coefficients.out
+rate_coefficients.out
 --------------------------------------------
 
