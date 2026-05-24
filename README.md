@@ -12,6 +12,10 @@ main: stable up-to-date version.
 dev: use it at your own risks.
 
 ## News
+[14.04.2026]: **major change** The code now generates a single output file abundances.out, instead of one per timestep. The abundances per timestep are inside the single file. If the run fails between two timesteps, then only the complete sets of abundances are stored in the file so it is readable in any case. This change is
+meant to facilitate dada handling (sometimes the user may need to work with hundreds of models). Also, it is also recommanded not to work with the ascii files and work with the binary file instead. A Python package (astroMUGS) was specifically built to easily read, write, and plot this output file. 
+
+
 [22.03.2026]: **fix** In ``ode_solver.f90``, changed `IWORK(6) = 2000` to `IWORK(6) = 10000` to increase the first-step MXSTEP, because in 
 disk models it is common to hit the cap on the first step on certain spatial points.
 
