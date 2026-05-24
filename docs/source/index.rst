@@ -12,7 +12,6 @@ Contents
    install
    basicuse
    inputoutput
-   modelstructure
    astrocheminside
    particularities
    bestpractices

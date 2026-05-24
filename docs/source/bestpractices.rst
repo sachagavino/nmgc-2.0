@@ -1,7 +1,7 @@
 .. _chap-bestpractices:
 
 
-Best practices for disks
+Best practices
 ************
 
 #. Avoid convergence issues
