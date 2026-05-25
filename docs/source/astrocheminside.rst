@@ -100,6 +100,255 @@ Rates are split into **constant** (temperature/density-only dependent,
 the latter called inside the ODE integrator at each function evaluation.
 
 
+The three-phase model
+---------------------
+
+NMGC implements the three-phase model of :cite:t:`Ruaud2016`, tracking
+gas-phase :math:`n(i)`, surface :math:`n_s(i)`, and mantle :math:`n_m(i)`
+densities for each species :math:`i`.
+
+The three coupled ODEs
+^^^^^^^^^^^^^^^^^^^^^^
+
+Gas-phase evolution:
+
+.. math::
+
+   \frac{\mathrm{d}n(i)}{\mathrm{d}t} =
+     \sum_{l,j} k_{lj}\,n(l)\,n(j)
+     + k_{\mathrm{diss}}(j)\,n(j)
+     + k_{\mathrm{des}}(i)\,n_s(i)
+     - k_{\mathrm{acc}}(i)\,n(i)
+     - k_{\mathrm{diss}}(i)\,n(i)
+     - n(i)\sum_j k_{ij}\,n(j).
+
+Surface evolution:
+
+.. math::
+
+   \frac{\mathrm{d}n_s(i)}{\mathrm{d}t} =
+     \sum_{l,j} k^s_{lj}\,n_s(l)\,n_s(j)
+     + k^s_{\mathrm{diss}}(j)\,n_s(j)
+     + k_{\mathrm{acc}}(i)\,n(i)
+     + k^m_{\mathrm{swap}}(i)\,n_m(i)
+     + \frac{\mathrm{d}n_m(i)}{\mathrm{d}t}\bigg|_{m\to s}
+     - n_s(i)\sum_j k^s_{ij}\,n_s(j)
+     - k_{\mathrm{des}}(i)\,n_s(i)
+     - k^s_{\mathrm{diss}}(i)\,n_s(i)
+     - k^s_{\mathrm{swap}}(i)\,n_s(i)
+     - \frac{\mathrm{d}n_s(i)}{\mathrm{d}t}\bigg|_{s\to m}.
+
+Mantle evolution:
+
+.. math::
+
+   \frac{\mathrm{d}n_m(i)}{\mathrm{d}t} =
+     \sum_{l,j} k^m_{lj}\,n_m(l)\,n_m(j)
+     + k^m_{\mathrm{diss}}(j)\,n_m(j)
+     + k^m_{\mathrm{swap}}(i)\,n_s(i)
+     + \frac{\mathrm{d}n_s(i)}{\mathrm{d}t}\bigg|_{s\to m}
+     - n_m(i)\sum_j k^m_{ij}\,n_m(j)
+     - k^m_{\mathrm{diss}}(i)\,n_m(i)
+     - k^m_{\mathrm{swap}}(i)\,n_m(i)
+     - \frac{\mathrm{d}n_m(i)}{\mathrm{d}t}\bigg|_{m\to s}.
+
+**Implementation:** In ``ode_solver.f90:get_temporal_derivatives`` (lines 380–543)
+the main ODE loop handles gas-phase and all surface/mantle reactions uniformly via
+``YD2``.  Reaction types 40 and 41 (surface↔mantle transfer) are accumulated
+separately and added after the call to ``set_dependant_rates_3phase`` (lines
+468–537).
+
+Surface-to-mantle and mantle-to-surface transfer
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**Surface-to-mantle** (type 40):
+
+.. math::
+   :label: s2m
+
+   \frac{\mathrm{d}n_s(i)}{\mathrm{d}t}\bigg|_{s\to m}
+   = \alpha_{\mathrm{gain}}\,\frac{n_s(i)}{n_{s,\mathrm{tot}}}\,
+     \frac{\mathrm{d}n_{s,\mathrm{gain}}}{\mathrm{d}t},
+
+with:
+
+.. math::
+
+   \alpha_{\mathrm{gain}} = \frac{\sum_i N_s(i)}{\beta\,N_{\mathrm{site}}},
+   \quad \beta = 2\;\text{(Fayolle et al. 2011)}.
+
+**Mantle-to-surface** (type 41):
+
+.. math::
+   :label: m2s
+
+   \frac{\mathrm{d}n_m(i)}{\mathrm{d}t}\bigg|_{m\to s}
+   = \alpha_{\mathrm{loss}}\,\frac{n_m(i)}{n_{m,\mathrm{tot}}}\,
+     \frac{\mathrm{d}n_{s,\mathrm{loss}}}{\mathrm{d}t},
+
+with:
+
+.. math::
+
+   \alpha_{\mathrm{loss}} = \min\!\left(\frac{\sum_i N_m(i)}{\sum_i N_s(i)},\; 1\right).
+
+**Implementation** — ``ode_solver.f90:set_dependant_rates_3phase``,
+lines 2001–2054:
+
+.. code-block:: fortran
+   :caption: ode_solver.f90:2033–2037 — surface-to-mantle transfer (type 40)
+
+   ! alpha_gain = (ab_surf * GTODN / N_site) / nb_active_lay
+   alpha_3_phase = ab_surf(ic_i) * GTODN(ic_i) / nb_sites_per_grain(ic_i) / nb_active_lay
+   reaction_rates(j) = alpha_3_phase * rate_tot_acc(ic_i) / ab_surf(ic_i)
+
+.. code-block:: fortran
+   :caption: ode_solver.f90:2004–2007 — mantle-to-surface transfer (type 41)
+
+   ! alpha_loss = min(ab_mant / ab_surf, 1)
+   alpha_3_phase = ab_mant(ic_i) / ab_surf(ic_i)
+   IF (alpha_3_phase >= 1.0d0) alpha_3_phase = 1.0d0
+   reaction_rates(j) = -alpha_3_phase * rate_tot_des(ic_i) / ab_mant(ic_i)
+
+**✓ Verified:** :eq:`s2m` and :eq:`m2s` are correctly implemented.
+``nb_active_lay`` = :math:`\beta = 2` (set in ``parameters.in``),
+``rate_tot_acc`` and ``rate_tot_des`` are the total surface accretion and
+desorption rates accumulated in ``get_temporal_derivatives`` (lines 470–485).
+
+Mantle-to-surface swapping
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. math::
+   :label: swap_m
+
+   k^m_{\mathrm{swap}}(i) =
+   \begin{cases}
+     \dfrac{1}{t^m_{\mathrm{hop}}(i)} & N_{\mathrm{lay,m}} < 1 \\[6pt]
+     \dfrac{1}{t^m_{\mathrm{hop}}(i)\,N_{\mathrm{lay,m}}} & N_{\mathrm{lay,m}} \geq 1
+   \end{cases}
+
+**Implementation** — lines 2010–2022:
+
+.. code-block:: fortran
+   :caption: ode_solver.f90:2011,2014 — mantle-to-surface swapping
+
+   rate_mant_to_surf = y(r1) * THERMAL_HOPING_RATE(r1)
+   if (sumlaymant(ic_i) >= 1.0d0) &
+     rate_mant_to_surf = rate_mant_to_surf / sumlaymant(ic_i)
+   rate_mant_to_surf = rate_mant_to_surf / y(r1)   ! gives k_swap^m
+
+where ``THERMAL_HOPING_RATE(K)`` = :math:`\nu_0\exp(-E^m_{\mathrm{diff}}/T_d)/N_{\mathrm{site}}`
+and ``sumlaymant`` = :math:`N_{\mathrm{lay,m}} = \sum_i N_m(i)/N_{\mathrm{site}}`.
+
+Surface-to-mantle swapping
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. math::
+   :label: swap_s
+
+   k^s_{\mathrm{swap}}(i) = \frac{\sum_j k^m_{\mathrm{swap}}(j)\,n_m(j)}{n_{s,\mathrm{tot}}}.
+
+**Implementation** — lines 2040–2043:
+
+.. code-block:: fortran
+   :caption: ode_solver.f90:2041 — surface-to-mantle swapping
+
+   rate_surf_to_mant = y(r1) * rate_tot_mant_surf(ic_i) / ab_surf(ic_i)
+   rate_surf_to_mant = rate_surf_to_mant / y(r1)   ! gives k_swap^s
+
+where ``rate_tot_mant_surf`` accumulates :math:`\sum_j k^m_{\mathrm{swap}}(j)\,Y_j`
+over all mantle species.
+
+**✓ Verified:** :eq:`swap_m` and :eq:`swap_s` are exactly implemented.
+
+Mantle chemistry
+^^^^^^^^^^^^^^^^
+
+Mantle species (prefix ``K`` in the reaction network) participate in
+LH-type reactions (type 14/21) exactly as surface species, but with their own
+diffusion barriers (``DIFF_BINDING_RATIO_MANT``).  When
+:math:`N_{\mathrm{lay,m}} > 1`, the LH rate is additionally divided by
+:math:`N_{\mathrm{lay,m}}` to account for the increased scanning time through
+the mantle (``ode_solver.f90:1825–1827``).
+
+Three-phase flag
+^^^^^^^^^^^^^^^^
+
+The three-phase model is activated by setting ``is_3_phase = 1`` in
+``parameters.in``.  When ``is_3_phase = 0``, types 40 and 41 rates are zeroed
+(lines 2024, 2050) and NMGC runs as a two-phase (gas + surface) model.
+
+.. rubric:: Summary of reaction type codes
+
+.. list-table:: NMGC reaction type codes
+   :header-rows: 1
+   :widths: 10 40 30
+
+   * - Type
+     - Process
+     - Source routine
+   * - 0
+     - Gas–grain charge reactions
+     - ``set_constant_rates``
+   * - 1
+     - Direct CR/X-ray ionization (gas)
+     - ``set_constant_rates``
+   * - 2
+     - CR-induced UV photodissociation (gas)
+     - ``set_dependant_rates``
+   * - 3
+     - UV photodissociation, ISRF (gas)
+     - ``set_dependant_rates``
+   * - 4–8
+     - Bimolecular gas reactions (Kooij, Ionpol)
+     - ``set_constant_rates``
+   * - 10–11
+     - Ad-hoc H\ :sub:`2` formation (legacy)
+     - ``set_constant_rates``
+   * - 14
+     - LH surface reactions
+     - ``set_dependant_rates``
+   * - 15
+     - Thermal evaporation (surface)
+     - ``set_constant_rates``
+   * - 16
+     - CR-induced desorption (surface)
+     - ``set_constant_rates``
+   * - 17–18
+     - CR-induced UV photodissociation (surface)
+     - ``set_dependant_rates``
+   * - 19–20
+     - UV photodissociation (surface)
+     - ``set_dependant_rates``
+   * - 21
+     - LH mantle reactions
+     - ``set_dependant_rates``
+   * - 30
+     - Eley-Rideal reactions
+     - ``set_dependant_rates``
+   * - 31
+     - Complex Induced Reactions (CIR/Hot-Atom)
+     - ``set_constant_rates``
+   * - 40
+     - Surface-to-mantle transfer
+     - ``set_dependant_rates_3phase``
+   * - 41
+     - Mantle-to-surface transfer
+     - ``set_dependant_rates_3phase``
+   * - 66
+     - Photodesorption by external UV
+     - ``set_dependant_rates``
+   * - 67
+     - Photodesorption by CR-induced UV
+     - ``set_dependant_rates``
+   * - 97
+     - B14 stochastic H\ :sub:`2` formation (gas-phase equivalent)
+     - ``set_dependant_rates``
+   * - 99
+     - Accretion (gas → surface)
+     - ``set_dependant_rates``
+
+
 Gas-phase chemistry
 -------------------
 
@@ -583,7 +832,7 @@ LH mechanism.  A proper treatment must account simultaneously for:
 1. Stochastic temperature fluctuations of small grains (transient heating by UV photon absorption).
 2. Discrete adsorbed H-atom populations (stochastic regime).
 
-**Adopted prescription:** :cite:t:`Bron2014` (B14) analytical fits to master-equation
+**Adopted prescription:** :cite:t:`Bron et al. (2014)` (B14) analytical fits to master-equation
 solutions.  Activated by setting ``is_h2_formation_rate = 1`` in ``parameters.in``.
 
 Equivalent density correction
@@ -662,250 +911,4 @@ The Eley-Rideal (chemisorption-based) H\ :sub:`2` formation channel is included
 automatically through the type-30 ER reactions for adsorbed H atoms.
 
 
-The three-phase model
----------------------
 
-NMGC implements the three-phase model of :cite:t:`Ruaud2016`, tracking
-gas-phase :math:`n(i)`, surface :math:`n_s(i)`, and mantle :math:`n_m(i)`
-densities for each species :math:`i`.
-
-The three coupled ODEs
-^^^^^^^^^^^^^^^^^^^^^^
-
-Gas-phase evolution:
-
-.. math::
-
-   \frac{\mathrm{d}n(i)}{\mathrm{d}t} =
-     \sum_{l,j} k_{lj}\,n(l)\,n(j)
-     + k_{\mathrm{diss}}(j)\,n(j)
-     + k_{\mathrm{des}}(i)\,n_s(i)
-     - k_{\mathrm{acc}}(i)\,n(i)
-     - k_{\mathrm{diss}}(i)\,n(i)
-     - n(i)\sum_j k_{ij}\,n(j).
-
-Surface evolution:
-
-.. math::
-
-   \frac{\mathrm{d}n_s(i)}{\mathrm{d}t} =
-     \sum_{l,j} k^s_{lj}\,n_s(l)\,n_s(j)
-     + k^s_{\mathrm{diss}}(j)\,n_s(j)
-     + k_{\mathrm{acc}}(i)\,n(i)
-     + k^m_{\mathrm{swap}}(i)\,n_m(i)
-     + \frac{\mathrm{d}n_m(i)}{\mathrm{d}t}\bigg|_{m\to s}
-     - n_s(i)\sum_j k^s_{ij}\,n_s(j)
-     - k_{\mathrm{des}}(i)\,n_s(i)
-     - k^s_{\mathrm{diss}}(i)\,n_s(i)
-     - k^s_{\mathrm{swap}}(i)\,n_s(i)
-     - \frac{\mathrm{d}n_s(i)}{\mathrm{d}t}\bigg|_{s\to m}.
-
-Mantle evolution:
-
-.. math::
-
-   \frac{\mathrm{d}n_m(i)}{\mathrm{d}t} =
-     \sum_{l,j} k^m_{lj}\,n_m(l)\,n_m(j)
-     + k^m_{\mathrm{diss}}(j)\,n_m(j)
-     + k^m_{\mathrm{swap}}(i)\,n_s(i)
-     + \frac{\mathrm{d}n_s(i)}{\mathrm{d}t}\bigg|_{s\to m}
-     - n_m(i)\sum_j k^m_{ij}\,n_m(j)
-     - k^m_{\mathrm{diss}}(i)\,n_m(i)
-     - k^m_{\mathrm{swap}}(i)\,n_m(i)
-     - \frac{\mathrm{d}n_m(i)}{\mathrm{d}t}\bigg|_{m\to s}.
-
-**Implementation:** In ``ode_solver.f90:get_temporal_derivatives`` (lines 380–543)
-the main ODE loop handles gas-phase and all surface/mantle reactions uniformly via
-``YD2``.  Reaction types 40 and 41 (surface↔mantle transfer) are accumulated
-separately and added after the call to ``set_dependant_rates_3phase`` (lines
-468–537).
-
-Surface-to-mantle and mantle-to-surface transfer
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-**Surface-to-mantle** (type 40):
-
-.. math::
-   :label: s2m
-
-   \frac{\mathrm{d}n_s(i)}{\mathrm{d}t}\bigg|_{s\to m}
-   = \alpha_{\mathrm{gain}}\,\frac{n_s(i)}{n_{s,\mathrm{tot}}}\,
-     \frac{\mathrm{d}n_{s,\mathrm{gain}}}{\mathrm{d}t},
-
-with:
-
-.. math::
-
-   \alpha_{\mathrm{gain}} = \frac{\sum_i N_s(i)}{\beta\,N_{\mathrm{site}}},
-   \quad \beta = 2\;\text{(Fayolle et al. 2011)}.
-
-**Mantle-to-surface** (type 41):
-
-.. math::
-   :label: m2s
-
-   \frac{\mathrm{d}n_m(i)}{\mathrm{d}t}\bigg|_{m\to s}
-   = \alpha_{\mathrm{loss}}\,\frac{n_m(i)}{n_{m,\mathrm{tot}}}\,
-     \frac{\mathrm{d}n_{s,\mathrm{loss}}}{\mathrm{d}t},
-
-with:
-
-.. math::
-
-   \alpha_{\mathrm{loss}} = \min\!\left(\frac{\sum_i N_m(i)}{\sum_i N_s(i)},\; 1\right).
-
-**Implementation** — ``ode_solver.f90:set_dependant_rates_3phase``,
-lines 2001–2054:
-
-.. code-block:: fortran
-   :caption: ode_solver.f90:2033–2037 — surface-to-mantle transfer (type 40)
-
-   ! alpha_gain = (ab_surf * GTODN / N_site) / nb_active_lay
-   alpha_3_phase = ab_surf(ic_i) * GTODN(ic_i) / nb_sites_per_grain(ic_i) / nb_active_lay
-   reaction_rates(j) = alpha_3_phase * rate_tot_acc(ic_i) / ab_surf(ic_i)
-
-.. code-block:: fortran
-   :caption: ode_solver.f90:2004–2007 — mantle-to-surface transfer (type 41)
-
-   ! alpha_loss = min(ab_mant / ab_surf, 1)
-   alpha_3_phase = ab_mant(ic_i) / ab_surf(ic_i)
-   IF (alpha_3_phase >= 1.0d0) alpha_3_phase = 1.0d0
-   reaction_rates(j) = -alpha_3_phase * rate_tot_des(ic_i) / ab_mant(ic_i)
-
-**✓ Verified:** :eq:`s2m` and :eq:`m2s` are correctly implemented.
-``nb_active_lay`` = :math:`\beta = 2` (set in ``parameters.in``),
-``rate_tot_acc`` and ``rate_tot_des`` are the total surface accretion and
-desorption rates accumulated in ``get_temporal_derivatives`` (lines 470–485).
-
-Mantle-to-surface swapping
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-.. math::
-   :label: swap_m
-
-   k^m_{\mathrm{swap}}(i) =
-   \begin{cases}
-     \dfrac{1}{t^m_{\mathrm{hop}}(i)} & N_{\mathrm{lay,m}} < 1 \\[6pt]
-     \dfrac{1}{t^m_{\mathrm{hop}}(i)\,N_{\mathrm{lay,m}}} & N_{\mathrm{lay,m}} \geq 1
-   \end{cases}
-
-**Implementation** — lines 2010–2022:
-
-.. code-block:: fortran
-   :caption: ode_solver.f90:2011,2014 — mantle-to-surface swapping
-
-   rate_mant_to_surf = y(r1) * THERMAL_HOPING_RATE(r1)
-   if (sumlaymant(ic_i) >= 1.0d0) &
-     rate_mant_to_surf = rate_mant_to_surf / sumlaymant(ic_i)
-   rate_mant_to_surf = rate_mant_to_surf / y(r1)   ! gives k_swap^m
-
-where ``THERMAL_HOPING_RATE(K)`` = :math:`\nu_0\exp(-E^m_{\mathrm{diff}}/T_d)/N_{\mathrm{site}}`
-and ``sumlaymant`` = :math:`N_{\mathrm{lay,m}} = \sum_i N_m(i)/N_{\mathrm{site}}`.
-
-Surface-to-mantle swapping
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-.. math::
-   :label: swap_s
-
-   k^s_{\mathrm{swap}}(i) = \frac{\sum_j k^m_{\mathrm{swap}}(j)\,n_m(j)}{n_{s,\mathrm{tot}}}.
-
-**Implementation** — lines 2040–2043:
-
-.. code-block:: fortran
-   :caption: ode_solver.f90:2041 — surface-to-mantle swapping
-
-   rate_surf_to_mant = y(r1) * rate_tot_mant_surf(ic_i) / ab_surf(ic_i)
-   rate_surf_to_mant = rate_surf_to_mant / y(r1)   ! gives k_swap^s
-
-where ``rate_tot_mant_surf`` accumulates :math:`\sum_j k^m_{\mathrm{swap}}(j)\,Y_j`
-over all mantle species.
-
-**✓ Verified:** :eq:`swap_m` and :eq:`swap_s` are exactly implemented.
-
-Mantle chemistry
-^^^^^^^^^^^^^^^^
-
-Mantle species (prefix ``K`` in the reaction network) participate in
-LH-type reactions (type 14/21) exactly as surface species, but with their own
-diffusion barriers (``DIFF_BINDING_RATIO_MANT``).  When
-:math:`N_{\mathrm{lay,m}} > 1`, the LH rate is additionally divided by
-:math:`N_{\mathrm{lay,m}}` to account for the increased scanning time through
-the mantle (``ode_solver.f90:1825–1827``).
-
-Three-phase flag
-^^^^^^^^^^^^^^^^
-
-The three-phase model is activated by setting ``is_3_phase = 1`` in
-``parameters.in``.  When ``is_3_phase = 0``, types 40 and 41 rates are zeroed
-(lines 2024, 2050) and NMGC runs as a two-phase (gas + surface) model.
-
-.. rubric:: Summary of reaction type codes
-
-.. list-table:: NMGC reaction type codes
-   :header-rows: 1
-   :widths: 10 40 30
-
-   * - Type
-     - Process
-     - Source routine
-   * - 0
-     - Gas–grain charge reactions
-     - ``set_constant_rates``
-   * - 1
-     - Direct CR/X-ray ionization (gas)
-     - ``set_constant_rates``
-   * - 2
-     - CR-induced UV photodissociation (gas)
-     - ``set_dependant_rates``
-   * - 3
-     - UV photodissociation, ISRF (gas)
-     - ``set_dependant_rates``
-   * - 4–8
-     - Bimolecular gas reactions (Kooij, Ionpol)
-     - ``set_constant_rates``
-   * - 10–11
-     - Ad-hoc H\ :sub:`2` formation (legacy)
-     - ``set_constant_rates``
-   * - 14
-     - LH surface reactions
-     - ``set_dependant_rates``
-   * - 15
-     - Thermal evaporation (surface)
-     - ``set_constant_rates``
-   * - 16
-     - CR-induced desorption (surface)
-     - ``set_constant_rates``
-   * - 17–18
-     - CR-induced UV photodissociation (surface)
-     - ``set_dependant_rates``
-   * - 19–20
-     - UV photodissociation (surface)
-     - ``set_dependant_rates``
-   * - 21
-     - LH mantle reactions
-     - ``set_dependant_rates``
-   * - 30
-     - Eley-Rideal reactions
-     - ``set_dependant_rates``
-   * - 31
-     - Complex Induced Reactions (CIR/Hot-Atom)
-     - ``set_constant_rates``
-   * - 40
-     - Surface-to-mantle transfer
-     - ``set_dependant_rates_3phase``
-   * - 41
-     - Mantle-to-surface transfer
-     - ``set_dependant_rates_3phase``
-   * - 66
-     - Photodesorption by external UV
-     - ``set_dependant_rates``
-   * - 67
-     - Photodesorption by CR-induced UV
-     - ``set_dependant_rates``
-   * - 97
-     - B14 stochastic H\ :sub:`2` formation (gas-phase equivalent)
-     - ``set_dependant_rates``
-   * - 99
-     - Accretion (gas → surface)
-     - ``set_dependant_rates``
