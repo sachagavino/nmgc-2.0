@@ -933,7 +933,7 @@ end subroutine get_temporal_derivatives
       
       THERMAL_HOPING_RATE(K)=VIBRATION_FREQUENCY(K)*EXP(-DIFFUSION_BARRIER(K)/actual_dust_temp(ic_i))/nb_sites_per_grain(ic_i)
       CR_HOPING_RATE(K)=VIBRATION_FREQUENCY(K)*EXP(-DIFFUSION_BARRIER(K)/CR_PEAK_GRAIN_TEMP_all(ic_i))/nb_sites_per_grain(ic_i)*&
-      (CR_IONISATION_RATE / 1.3D-17) * FE_IONISATION_RATE_r_dpnt * CR_PEAK_DURATION
+      (CR_IONISATION_RATE / 1.3D-17) * (FE_IONISATION_RATE*grain_radii(ic_i)**2/grain_radius**2) * CR_PEAK_DURATION
       if (is_crid.NE.0) THERMAL_HOPING_RATE(K)=VIBRATION_FREQUENCY(K)*EXP(-DIFFUSION_BARRIER(K)/actual_dust_temp(ic_i)) &
                       /nb_sites_per_grain(ic_i) + CR_HOPING_RATE(K)
     endif  

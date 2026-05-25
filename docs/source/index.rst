@@ -13,5 +13,5 @@ Contents
    basicuse
    inputoutput
    astrocheminside
-   particularities
+   specificities
    bestpractices

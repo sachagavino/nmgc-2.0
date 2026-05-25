@@ -12,6 +12,16 @@ main: stable up-to-date version.
 dev: use it at your own risks.
 
 ## News
+
+[25.05.2026]: **Bug fix (commit -m cr_hopping and accr rate)** ACCRETION_RATES(species) is a per-species scalar that is overwritten for each grain bin in the ITYPE=99 accretion loop. When modify_specific_rates (activated by MODIFY_RATE_FLAG != 0) reads it to compute the rate-limiting comparison for surface reactions, it sees the value from the last grain bin that accreted a given species, not necessarily the bin where the surface reaction happens.
+Impact: The modified-rate correction for H and H2 on grain surfaces uses wrong accretion rates when MODIFY_RATE_FLAG != 0 and nb_grains > 1.
+Fix: Make ACCRETION_RATES a per-reaction (or per-species-per-bin) array, or compute it locally in modify_specific_rates using ACC_RATES_PREFACTOR(J).
+
+
+[25.05.2026]: **Bug fix (commit -m cr_hopping and accr rate)** When is_crid != 0, the code computes a CR hopping rate per surface species to drive cosmic-ray-induced diffusion. It needs the Fe-ion rate scaled by the grain bin's cross-section. But FE_IONISATION_RATE_r_dpnt is a scalar set inside the ITYPE=16 desorption loop, and when the species loop runs it retains the value from the last ITYPE=16 reaction processed — which may belong to a different grain bin than the species currently being processed.
+Impact: Wrong CR hopping rates for species on all bins except whichever one happened to be last in the ITYPE=16 loop. Only triggered when both is_crid != 0 and nb_grains > 1.
+Fix: Compute FE_IONISATION_RATE * grain_radii(ic_i)² / grain_radius² locally inside the species loop using ic_i (the bin index of the species).
+
 [14.04.2026]: **major change** The code now generates a single output file abundances.out, instead of one per timestep. The abundances per timestep are inside the single file. If the run fails between two timesteps, then only the complete sets of abundances are stored in the file so it is readable in any case. This change is
 meant to facilitate dada handling (sometimes the user may need to work with hundreds of models). Also, it is also recommanded not to work with the ascii files and work with the binary file instead. A Python package (astroMUGS) was specifically built to easily read, write, and plot this output file. 
 
