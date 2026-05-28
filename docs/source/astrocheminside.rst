@@ -833,7 +833,7 @@ LH mechanism.  A proper treatment must account simultaneously for:
 2. Discrete adsorbed H-atom populations (stochastic regime).
 
 **Adopted prescription:** :cite:t:`Bron et al. (2014)` (B14) analytical fits to master-equation
-solutions.  Activated by setting ``is_h2_formation_rate = 1`` in ``parameters.in``.
+solutions.  Activated by setting ``is_h2_formation_rate = 1`` in ``parameters.in``. Implemented by :cite:t:`gavino et al. (2021)`
 
 Equivalent density correction
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

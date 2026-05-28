@@ -47,18 +47,16 @@ subroutine get_outputs()
 
   ! The next write will be written in the same line
   write(*,'(a)', advance='no') 'Reading unformatted outputs...'
-  ! We read output files
+  ! We read the single binary output file (all timesteps are stored sequentially)
+  open(10, file='abundances.out', status='old', form='unformatted')
   do output=1,nb_outputs
-    write(filename_output, '(a,i0.6,a)') 'abundances.',output,'.out'
-
-    open(10, file=filename_output, status='old', form='unformatted')
     read(10) time(output)
     read(10) gas_temperature_out(1:spatial_resolution, output), dust_temperature_out(1:spatial_resolution, output), &
             density(1:spatial_resolution, output), &
             visual_extinction_out(1:spatial_resolution, output), x_rate(output)
     read(10) abundances_out(output,1:nb_species, 1:spatial_resolution)
-    close(10)
   enddo
+  close(10)
   ! achar(13) is carriage return '\r'. Allow to go back to the beginning of the line
   write(*,'(a,a)') achar(13), 'Reading unformatted outputs... Done'
 
