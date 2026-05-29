@@ -1477,7 +1477,7 @@ abCO(1:nb_grains) = 0.d0
 !> REFERENCE: --> Bron et al. (2014) -- url: https://ui.adsabs.harvard.edu/abs/2014A%26A...569A.100B/abstract 
 !%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
   IF (is_h2_formation_rate.eq.1) THEN ! h2_formation flag in parameters.in
-      if (x_i.le.height_h2formation) then ! height threshold above where the B14's H2 formation rates is method.
+      if (x_i.le.height_h2formation .or. height_h2formation.eq.-1) then ! -1: apply B14 everywhere; otherwise apply up to this spatial index
           do J=type_id_start(97),type_id_stop(97)
               stick_Tgas = 1/(1 + (gas_temperature(x_i)/T_2)**beta) ! sticking function at gas_temperature
               stick_100 = 1/(1 + (100./T_2)**beta) ! reference sticking function at 100K. Bron et al. (2014) used 100K.
