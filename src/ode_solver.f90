@@ -1506,7 +1506,9 @@ abCO(1:nb_grains) = 0.d0
               !write (*,*) reaction_rates(J)
           enddo
       else
-          reaction_rates(J) = 0.d0
+          do J=type_id_start(97),type_id_stop(97)
+              reaction_rates(J) = 0.d0
+          enddo
       end if ! end height threshold
   END IF ! end h2_formation flag
 
