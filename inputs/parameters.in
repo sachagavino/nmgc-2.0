@@ -31,7 +31,7 @@ photo_disk = 0 ! Computation of photodissociation rates for protoplanetary disks
 is_grain_reactions = 1 ! Accretion, grain surface reactions
 is_h2_adhoc_form = 0 ! Ad hoc formation of H2 on grain surfaces (1=activated)
 is_h2_formation_rate = 1 ! h2 formation rates on surfaces from Bron et al: (2014)
-height_h2formation = 64 ! Spatial point above which B14s method is used. If 0 then B14 is not used at all.
+height_h2formation = 64 ! Spatial point index above which B14s method is used. If 0 then B14 is not used at all.
 is_absorption_h2 = 1 ! H2 self-shielding from Lee & Herbst (1996) (1=activated)
 is_absorption_co = 2 ! CO self-shielding. (1: Lee & Herbst (1996),  2: Visser et al. (2009)
 is_absorption_n2 = 1 ! N2 self-shielding from Li et al. (2013) (1=activated)

@@ -309,7 +309,7 @@ use global_variables
   write(10,'(a,i0,a)') 'is_grain_reactions = ', IS_GRAIN_REACTIONS, ' ! Accretion, grain surface reactions'
   write(10,'(a,i0,a)') 'is_h2_adhoc_form = ', IS_H2_ADHOC_FORM, ' ! Ad hoc formation of H2 on grain surfaces (1=activated)'
   write(10,'(a,i0,a)') 'is_h2_formation_rate = ', is_h2_formation_rate, ' ! h2 formation rates on surfaces from Bron et al: (2014)'
-  write(10,'(a,i0,a)') 'height_h2formation = ', height_h2formation, ' ! Spatial point above which B14s method is used. If 0 then &
+  write(10,'(a,i0,a)') 'height_h2formation = ', height_h2formation, ' ! Spatial point index above which B14s method is used. If 0 then &
                       &B14 is not used at all.'
   write(10,'(a,i0,a)') 'is_absorption_h2 = ', is_absorption_h2, ' ! H2 self-shielding from Lee & Herbst (1996) (1=activated)'
   write(10,'(a,i0,a)') 'is_absorption_co = ', is_absorption_co, ' ! CO self-shielding. (1: Lee & Herbst (1996), &
