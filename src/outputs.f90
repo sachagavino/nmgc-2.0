@@ -31,6 +31,7 @@ subroutine get_outputs()
   real(double_precision), dimension(:), allocatable :: x_rate !< X ionisation rate [s-1]
   character(2) :: c_i !character variable to convert integer value of j to character j
   integer      :: i,ic_i !convert character c_i to integer ic_i
+  integer      :: ios !< IOSTAT flag for detecting early end-of-file
 
   ! Initialise all variables from the global_variables module. Only some of them are used here.
   ! call init_gasgrain()
@@ -47,10 +48,15 @@ subroutine get_outputs()
 
   ! The next write will be written in the same line
   write(*,'(a)', advance='no') 'Reading unformatted outputs...'
-  ! We read the single binary output file (all timesteps are stored sequentially)
+  ! We read the single binary output file (all timesteps are stored sequentially).
+  ! The file may contain fewer timesteps than nb_outputs if the run was interrupted.
   open(10, file='abundances.out', status='old', form='unformatted')
   do output=1,nb_outputs
-    read(10) time(output)
+    read(10, iostat=ios) time(output)
+    if (ios /= 0) then
+      nb_outputs = output - 1
+      exit
+    endif
     read(10) gas_temperature_out(1:spatial_resolution, output), dust_temperature_out(1:spatial_resolution, output), &
             density(1:spatial_resolution, output), &
             visual_extinction_out(1:spatial_resolution, output), x_rate(output)
@@ -59,6 +65,7 @@ subroutine get_outputs()
   close(10)
   ! achar(13) is carriage return '\r'. Allow to go back to the beginning of the line
   write(*,'(a,a)') achar(13), 'Reading unformatted outputs... Done'
+  write(*,'(a,i0,a)') 'Note: ', nb_outputs, ' timestep(s) found in abundances.out'
 
   ! Test if the folder exists
   inquire(file='ab', exist=isDefined)

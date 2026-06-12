@@ -538,17 +538,8 @@ PROGRAM nmgc
 
 
     elseif(do_outputs) then
-        ! We calculate the total number of outputs by checking for each file if it exist or not.
-      nb_outputs = 0
-      isDefined = .true.
-      do while(isDefined)
-        nb_outputs = nb_outputs + 1
-        write(filename_output, '(a,i0.6,a)') 'abundances.',nb_outputs,'.out'
-        inquire(file=filename_output, exist=isDefined)
-      enddo
-      nb_outputs = nb_outputs - 1
-
-      if (nb_outputs.eq.0) then
+      inquire(file='abundances.out', exist=isDefined)
+      if (.not.isDefined) then
         write(Error_unit,'(a)') 'ERROR: there is no output files in the model. Please, compute the chemistry first.'
         stop
       endif
@@ -562,18 +553,9 @@ PROGRAM nmgc
       write(*,'(a,i0)') 'Start generatint output ASCII files... '
       call get_outputs()
 
-    elseif(do_rates) then 
-      ! We calculate the total number of outputs by checking for each file if it exist or not.
-      nb_outputs = 0
-      isDefined = .true.
-      do while(isDefined)
-        nb_outputs = nb_outputs + 1
-        write(filename_output, '(a,i0.6,a)') 'abundances.',nb_outputs,'.out'
-        inquire(file=filename_output, exist=isDefined)
-      enddo
-      nb_outputs = nb_outputs - 1
-
-      if (nb_outputs.eq.0) then
+    elseif(do_rates) then
+      inquire(file='abundances.out', exist=isDefined)
+      if (.not.isDefined) then
         write(Error_unit,'(a)') 'ERROR: there is no output files in the model. Please, compute the chemistry first.'
         stop
       endif
@@ -588,18 +570,9 @@ PROGRAM nmgc
       write(*,'(a,i0)') 'Start generating fluxes and rate coefficients files... '
       call get_rates()
 
-      elseif(do_major_reactions) then 
-        ! We calculate the total number of outputs by checking for each file if it exist or not.
-        nb_outputs = 0
-        isDefined = .true.
-        do while(isDefined)
-          nb_outputs = nb_outputs + 1
-          write(filename_output, '(a,i0.6,a)') 'abundances.',nb_outputs,'.out'
-          inquire(file=filename_output, exist=isDefined)
-        enddo
-        nb_outputs = nb_outputs - 1
-
-        if (nb_outputs.eq.0) then
+      elseif(do_major_reactions) then
+        inquire(file='abundances.out', exist=isDefined)
+        if (.not.isDefined) then
           write(Error_unit,'(a)') 'ERROR: there is no output files in the model. Please, compute the chemistry first.'
           stop
         endif

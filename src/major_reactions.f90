@@ -16,6 +16,7 @@ real(double_precision) :: PERCENTAGE_THRESHOLD !< Percentage below which the rea
 ! Locals
 character(len=80) :: filename_output
 integer :: output, reaction, i ! index for loops
+integer :: ios !< IOSTAT flag for detecting early end-of-file
 real(double_precision) :: tmp !< temporary variable
 character(len=80) :: output_format
 
@@ -83,25 +84,29 @@ allocate(productions_id(nb_reactions))
 
 ! The next write will be written in the same line
 write(*,'(a)', advance='no') 'Reading unformatted outputs...'
-! We read output files
+! We read the single binary output file (all timesteps stored sequentially).
+! The file may contain fewer timesteps than nb_outputs if the run was interrupted.
+open(10, file='abundances.out', status='old', form='unformatted')
 do output=1,nb_outputs
-  write(filename_output, '(a,i0.6,a)') 'abundances.',output,'.out'
-
-  open(10, file=filename_output, status='old', form='unformatted')
-  read(10) time(output)
+  read(10, iostat=ios) time(output)
+  if (ios /= 0) then
+    nb_outputs = output - 1
+    exit
+  endif
   read(10) gas_temperature_out(1:spatial_resolution, output), dust_temperature_out(1:spatial_resolution, output), &
            density(1:spatial_resolution, output), visual_extinction_out(1:spatial_resolution, output), zeta(output)
   read(10) abundances_out(output,1:nb_species, 1:spatial_resolution)
-  close(10)
-  
-  write(filename_output, '(a,i0.6,a)') 'rates.',output,'.out'
-
-  open(10, file=filename_output, status='old', form='unformatted')
-read(10) reaction_rates_out(1:spatial_resolution,output,1:nb_reactions)
-  close(10)
 enddo
+close(10)
+
+open(10, file='rates.out', status='old', form='unformatted')
+do output=1,nb_outputs
+  read(10) reaction_rates_out(1:spatial_resolution,output,1:nb_reactions)
+enddo
+close(10)
 ! achar(13) is carriage return '\r'. Allow to go back to the beginning of the line
 write(*,'(a,a)') achar(13), 'Reading unformatted outputs... Done'
+write(*,'(a,i0,a)') 'Note: ', nb_outputs, ' timestep(s) found in abundances.out'
 
 ! For non existing reactants (whose index is 'nb_species+1') in reactions, we create a new species whose abundance is always 1, so that we can calculate the fluxes 
 !! more easily.
