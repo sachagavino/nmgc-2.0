@@ -700,6 +700,12 @@ PROGRAM nmgc
       ! cf odpkdmain.f for translation
       if (i_state.ne.2) then
         write(*,*)  'ISTATE = ', I_STATE
+        if (i_state.eq.-5 .or. i_state.eq.-4 .or. i_state.le.-3) then
+          write(*,'(a,ES12.4,a,ES12.4,a,f6.2,a)') &
+            ' Integration stopped at T=', t/YEAR, ' yr of ', t_stop_step/YEAR, &
+            ' yr (', 100.d0*t/t_stop_step, '% complete)'
+          exit
+        endif
       endif
   
     enddo
