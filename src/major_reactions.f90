@@ -252,7 +252,7 @@ write(*,*) ''
 write(*,'(a,a,a,i0,a,es8.2,a,i0,a,es8.2,a)') 'For ', trim(user_species), ' at output n°', output_ID, &
 ' (', time(output_ID)/YEAR, ' years) and spatial point n°',user_1D_id,' (',grid_sample(user_1D_id)/AU,' AU)'
 write(*,'(2(a,es8.2),a,es9.1e3,a)') 'Gas density = ', density(user_1D_id, output_ID), ' [part/cm^3] ; Av = ', &
-visual_extinction_out(user_1D_id, output_ID), ' [mag] ; X rate = ', zeta(output), ' [s-1]'
+visual_extinction_out(user_1D_id, output_ID), ' [mag] ; X rate = ', zeta(output_ID), ' [s-1]'
 write(*,'(2(a,es8.2),a)') 'Gas temp = ', gas_temperature_out(user_1D_id, output_ID), ' [K] ; Dust temp = ', &
 dust_temperature_out(user_1D_id, output_ID), ' [K]'
 
@@ -274,7 +274,7 @@ do while(percentage.gt.PERCENTAGE_THRESHOLD)
   i = i - 1
   
   ! Just in case, to avoid negative index for arrays
-  if (i.lt.0) then
+  if (i.lt.1) then
     percentage = 0.d0
   else
     ! Done at the end of the loop to avoid printing one extra reaction below the threshold
@@ -301,7 +301,7 @@ do while(percentage.gt.PERCENTAGE_THRESHOLD)
   i = i - 1
   
   ! Just in case, to avoid negative index for arrays
-  if (i.lt.0) then
+  if (i.lt.1) then
     percentage = 0.d0
   else
       ! Done at the end of the loop to avoid printing one extra reaction below the threshold
