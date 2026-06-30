@@ -539,7 +539,7 @@ subroutine icomp_xchg(arr,k,j)
 real(double_precision), dimension(:), intent(in) :: arr !<[in] the reference array
 integer, intent(inout) :: k,j !<[in,out] index we will swap if necessary
 integer :: swp
-if (arr(j) < arr(i)) then
+if (arr(j) < arr(k)) then
   swp=k
   k=j
   j=swp
